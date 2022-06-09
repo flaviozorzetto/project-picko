@@ -1,0 +1,53 @@
+.card {
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   padding: 1.5rem;
+   border: 1px solid #e3e5e8;
+}
+
+.card__title {
+   font-size: 18px;
+   font-weight: 500;
+   line-height: 1.5rem;
+   text-align: left;
+}
+
+.card__content {
+   &__main {
+      display: flex;
+      align-items: center;
+      gap: 0 0.5rem;
+   }
+   &__details {
+      p {
+         margin-top: 0.5rem;
+         font-size: 14px;
+         font-weight: 500;
+         line-height: 1rem;
+         letter-spacing: -0.01em;
+         text-align: left;
+         span {
+            color: #464a53;
+         }
+      }
+   }
+}
+
+.card__status {
+   display: flex;
+   align-items: center;
+   gap: 0 3rem;
+   &__title {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.5rem;
+   }
+   &__subtitle {
+      margin-top: 0.5rem;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1rem;
+      color: #838895;
+   }
+}

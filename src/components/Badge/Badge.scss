@@ -1,0 +1,27 @@
+.badge {
+   border-radius: 4px;
+   font-style: normal;
+   font-weight: 500;
+   font-size: 10px;
+   padding: 4px 8px;
+
+   &-progress {
+      background: #fff5e6;
+      color: #7a4a00;
+   }
+
+   &-completed {
+      background: #e6ffea;
+      color: #00470b;
+   }
+
+   &-unitiated {
+      background: #e9eafb;
+      color: #121968;
+   }
+
+   &-archived {
+      background: #e3e5e8;
+      color: #464a53;
+   }
+}

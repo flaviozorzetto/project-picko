@@ -1,5 +1,11 @@
 import React from 'react';
+import Card from './components/Card/Card.js';
+import './styles/index.scss';
 
 export default function App() {
-   return <h1>Hello, World! 2.0</h1>;
+   return (
+      <div style={{ width: '1000px', margin: '1rem' }}>
+         <Card />
+      </div>
+   );
 }
