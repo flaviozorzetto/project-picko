@@ -3,11 +3,10 @@ import "../styles/signup.css"
 import { useAuth } from "../contexts/AuthContext.js"
 import { Link, useNavigate } from "react-router-dom"
 
-export default function Signup() {
+export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
-  const { signup } = useAuth();
+  const { login } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -15,17 +14,14 @@ export default function Signup() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if(passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match")
-    }
-
     try {
       setError("");
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await login(emailRef.current.value, passwordRef.current.value);
+      console.log(navigate)
       navigate("/");
     } catch {
-      setError("Failed to create an account")
+      setError("Failed to log in")
     }
     setLoading(false);
   }
@@ -33,7 +29,7 @@ export default function Signup() {
   return (
     <>
       <div className="container">
-        <span>Sign up</span>
+        <span>Sign in</span>
         {error && <b>{error}</b>}
         <form onSubmit={handleSubmit} className="signup-container">
           <label htmlFor="email">email</label>
@@ -42,14 +38,11 @@ export default function Signup() {
           <label htmlFor="password">Password</label>
           <input type="password" ref={passwordRef} placeholder="Enter Password" name="password" required></input>
 
-          <label htmlFor="password-confirmation">Confirm Password</label>
-          <input type="password" ref={passwordConfirmRef} placeholder="Confirm Password" name="password-confirmation" required></input>
-
-          <button disabled={loading}>Sign up</button>
+          <button type="submit" disabled={loading}>Log in</button>
         </form>
 
         <div>
-          <Link to="/login">Sign in</Link>
+          <Link to="/signup">Sign up</Link>
         </div>
 
       </div>
