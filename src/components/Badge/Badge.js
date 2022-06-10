@@ -27,5 +27,5 @@ export default function Badge(props) {
 
    const typeObj = returnTextType(props.type);
 
-   return <div className={`badge badge-${typeObj.class}`}>{typeObj.text}</div>;
+   return <div className={`badge badge_${typeObj.class}`}>{typeObj.text}</div>;
 }

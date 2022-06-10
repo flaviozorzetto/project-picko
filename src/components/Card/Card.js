@@ -6,8 +6,8 @@ export default function Card(props) {
       <div className="card">
          <div className="card__content">
             <div className="card__content__main">
-               <p className="card__title">Senior UI Designer</p>
-               <Badge type="progress" />
+               <span className="card__title">Senior UI Designer</span>
+               <Badge type="archived" />
             </div>
             <div className="card__content__details">
                <p>

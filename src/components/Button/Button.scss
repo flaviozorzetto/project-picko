@@ -1,0 +1,41 @@
+.button_primary,
+.button_secondary {
+   border: none;
+   font-family: inherit;
+   border-radius: 0.5rem;
+   color: #006446;
+   padding: 0.5rem 1rem;
+
+   &_m {
+      font-size: 1rem;
+      font-weight: 400;
+   }
+
+   &_s {
+      font-size: 0.9rem;
+      font-weight: 500;
+   }
+}
+
+.button_primary {
+   background: #dbff01;
+
+   &:hover {
+      background: #cef000;
+      cursor: pointer;
+   }
+
+   &:disabled {
+      background: #e3e5e8;
+      color: #838895;
+   }
+}
+
+.button_secondary {
+   background: #ffffff;
+
+   &:hover {
+      background: #f4f4f6;
+      cursor: pointer;
+   }
+}
