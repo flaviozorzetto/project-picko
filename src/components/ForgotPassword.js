@@ -1,15 +1,14 @@
 import React, { useRef, useState } from "react";
 import "../styles/signup.css"
 import { useAuth } from "../contexts/AuthContext.js"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 
-export default function Login() {
+export default function ForgotPassword() {
   const emailRef = useRef();
-  const passwordRef = useRef();
-  const { login } = useAuth();
+  const { resetPassword } = useAuth();
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -17,10 +16,10 @@ export default function Login() {
     try {
       setError("");
       setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value);
-      navigate("/");
+      await resetPassword(emailRef.current.value);
+      setMessage("Check your inbox for further instructions")
     } catch {
-      setError("Failed to log in")
+      setError("Failed to reset password")
     }
     setLoading(false);
   }
@@ -28,20 +27,18 @@ export default function Login() {
   return (
     <>
       <div className="container">
-        <span>Sign in</span>
+        <span>Password reset</span>
         {error && <b>{error}</b>}
+        {message && <b>{message}</b>}
         <form onSubmit={handleSubmit} className="signup-container">
           <label htmlFor="email">email</label>
           <input type="email" ref={emailRef} placeholder="Enter email" name="email" required></input>
 
-          <label htmlFor="password">Password</label>
-          <input type="password" ref={passwordRef} placeholder="Enter Password" name="password" required></input>
-
-          <button type="submit" disabled={loading}>Log in</button>
+          <button type="submit" disabled={loading}>Reset password</button>
         </form>
 
         <div>
-        <Link to="/forgot-password">Forgot Password?</Link>
+        <Link to="/login">Log in</Link>
         </div>
 
         <div>

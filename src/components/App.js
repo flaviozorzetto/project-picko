@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./Dashboard.js";
 import Login from "./Login.js";
 import PrivateRoute from "./PrivateRoute.js";
+import ForgotPassword from "./ForgotPassword.js";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
               </Route>
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
             </Routes>
           </AuthProvider>
         </Router>
