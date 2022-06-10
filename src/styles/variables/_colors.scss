@@ -1,0 +1,34 @@
+$colors: (
+   'olive-green': (
+      50: #f4fbf9,
+      100: #e9f6f2,
+      200: #c5e8dd,
+      300: #a1d9c9,
+      400: #7ccab4,
+      500: #58bc9f,
+      600: #41a084,
+      700: #327c66,
+      800: #235748,
+      900: #15342b,
+   ),
+   'green': (
+      50: #fbfdf1,
+      100: #f8fce4,
+      200: #ebf6b7,
+      300: #dff089,
+      400: #d2eb5c,
+      500: #c6e530,
+      600: #aac719,
+      700: #839a13,
+      800: #5c6d0e,
+      900: #363f08,
+   ),
+);
+
+:root {
+   @each $color, $variations in $colors {
+      @each $weight, $value in $variations {
+         --#{$color}-#{$weight}: #{$value};
+      }
+   }
+}
