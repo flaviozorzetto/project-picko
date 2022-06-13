@@ -1,0 +1,14 @@
+.tab__label {
+   font-family: inherit;
+   font-weight: 500;
+   font-size: 0.9rem;
+   padding: 1rem;
+   border-bottom: 1px solid #e3e5e8;
+   color: #838895;
+   cursor: pointer;
+
+   &_selected {
+      border-bottom: 1px solid #26272c;
+      color: #26272c;
+   }
+}
