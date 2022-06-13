@@ -19,7 +19,7 @@ export default function Tabs(props) {
                   }`}
                   key={index}
                   aria-controls={identifier}
-                  aria-selected={props.value == index ? 'true' : 'false'}
+                  aria-selected={props.value === index ? 'true' : 'false'}
                   onClick={() => {
                      props.setValue(index);
                   }}
