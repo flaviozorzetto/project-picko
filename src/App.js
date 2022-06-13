@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Button from './components/Button/Button.js';
 import Card from './components/Card/Card.js';
-import Tabs from './components/Navigation/Tabs.js';
-import TabPanel from './components/Navigation/TabPanel.js';
+import Tabs from './components/Navigation/Tab/Tabs.js';
+import TabPanel from './components/Navigation/Tab/TabPanel.js';
+import NavBar from './components/Navigation/NavBar/NavBar.js';
 import './styles/index.scss';
 
 export default function App() {
@@ -31,6 +32,16 @@ export default function App() {
          <TabPanel identifier={identifier} value={value} index={2}>
             Item 3
          </TabPanel>
+         <NavBar>
+            <h2>Test</h2>
+            <Tabs
+               identifier={identifier}
+               labels={labels}
+               setValue={setValue}
+               value={value}
+            />
+            <h2>Test</h2>
+         </NavBar>
       </div>
    );
 }
