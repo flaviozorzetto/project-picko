@@ -1,5 +1,5 @@
 import './Card.scss';
-import Badge from '../Badge/Badge';
+import Badge from '../Elements/Badge/Badge';
 
 export default function Card(props) {
    return (

@@ -1,7 +1,17 @@
 .navbar {
+   position: relative;
    width: 100%;
-   border-bottom: 1px solid #e3e5e8;
    padding: 0 1.5rem;
+
+   &::before {
+      content: '';
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      position: absolute;
+      border-bottom: 1px solid #e3e5e8;
+   }
 
    &__list {
       display: flex;
