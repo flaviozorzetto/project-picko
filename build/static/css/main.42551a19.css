@@ -1,6 +1,43 @@
 @import url(https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap);
+.button_primary,
+.button_secondary {
+   border: none;
+   border-radius: 0.5rem;
+   color: #006446;
+   font-family: inherit;
+   padding: 0.5rem 1rem;
+}
+.button_primary_m,
+.button_secondary_m {
+   font-size: 1rem;
+   font-weight: 400;
+}
+.button_primary_s,
+.button_secondary_s {
+   font-size: 0.9rem;
+   font-weight: 500;
+}
+.button_primary {
+   background: #dbff01;
+}
+.button_primary:hover {
+   background: #cef000;
+   cursor: pointer;
+}
+.button_primary:disabled {
+   background: #e3e5e8;
+   color: #838895;
+}
+.button_secondary {
+   background: #fff;
+}
+.button_secondary:hover {
+   background: #f4f4f6;
+   cursor: pointer;
+}
 .card {
    border: 1px solid #e3e5e8;
+   border-radius: 0.5rem;
    display: flex;
    justify-content: space-between;
    padding: 1.5rem;
@@ -48,25 +85,83 @@
 .badge {
    border-radius: 4px;
    font-size: 10px;
-   font-style: normal;
    font-weight: 500;
    padding: 4px 8px;
 }
-.badge-progress {
+.badge_progress {
    background: #fff5e6;
    color: #7a4a00;
 }
-.badge-completed {
+.badge_completed {
    background: #e6ffea;
    color: #00470b;
 }
-.badge-unitiated {
+.badge_unitiated {
    background: #e9eafb;
    color: #121968;
 }
-.badge-archived {
+.badge_archived {
    background: #e3e5e8;
    color: #464a53;
+}
+.tabs {
+   position: relative;
+}
+.tabs:before {
+   border-bottom: 1px solid #e3e5e8;
+   bottom: 0;
+   content: '';
+   left: 0;
+   position: absolute;
+   right: 0;
+}
+.tabs .tab__label {
+   color: #838895;
+   cursor: pointer;
+   font-family: inherit;
+   font-size: 0.9rem;
+   font-weight: 500;
+   padding: 1rem;
+}
+.tabs .tab__label_selected {
+   color: #26272c;
+   position: relative;
+}
+.tabs .tab__label_selected:after {
+   border-bottom: 2px solid #26272c;
+   bottom: 0;
+   content: '';
+   left: 0;
+   position: absolute;
+   right: 0;
+}
+.navbar {
+   padding: 0 1.5rem;
+   position: relative;
+   width: 100%;
+}
+.navbar:before {
+   border-bottom: 1px solid #e3e5e8;
+   bottom: 0;
+   content: '';
+   left: 0;
+   position: absolute;
+   right: 0;
+   top: 0;
+}
+.header,
+.navbar__list {
+   align-items: center;
+   display: flex;
+   justify-content: space-between;
+}
+.header {
+   border-bottom: 1px solid #e3e5e8;
+   padding: 1.5rem;
+}
+.header__title {
+   font-size: 1.25rem;
+   font-weight: 500;
 }
 *,
 :after,
@@ -136,6 +231,10 @@ video {
    padding: 0;
    vertical-align: baseline;
 }
+button {
+   background: none;
+   border: none;
+}
 footer,
 header,
 main,
@@ -194,4 +293,4 @@ input {
 body {
    font-family: Inter, sans-serif;
 }
-/*# sourceMappingURL=main.0919ee29.css.map*/
+/*# sourceMappingURL=main.42551a19.css.map*/

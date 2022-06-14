@@ -3,3 +3,28 @@
 body {
    font-family: 'Inter', sans-serif;
 }
+
+.main {
+   padding-top: 64px;
+}
+
+.container {
+   max-width: 1140px;
+   margin: auto;
+
+   @media screen and (max-width: 1200px) {
+      max-width: 960px;
+   }
+
+   @media screen and (max-width: 992px) {
+      max-width: 720px;
+   }
+
+   @media screen and (max-width: 768px) {
+      max-width: 540px;
+   }
+
+   @media screen and (max-width: 576px) {
+      max-width: 100%;
+   }
+}
