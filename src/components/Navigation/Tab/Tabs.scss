@@ -1,4 +1,7 @@
 .tabs {
+   :root {
+      --tab-padding: 1rem;
+   }
    position: relative;
 
    &::before {
@@ -15,7 +18,7 @@
       font-family: inherit;
       font-weight: 500;
       font-size: 0.9rem;
-      padding: 1rem;
+      padding: var(--tab-padding);
       color: #838895;
       cursor: pointer;
 

@@ -1,4 +1,5 @@
 .navbar {
+   --tab-padding: 1.5rem;
    position: relative;
    padding: 0 1.5rem;
 
@@ -17,9 +18,5 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-   }
-
-   .tab__label {
-      padding: 1.5rem;
    }
 }
