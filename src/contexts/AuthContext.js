@@ -15,8 +15,15 @@ export function AuthProvider({ children }) {
     return auth.createUserWithEmailAndPassword(email, password)
   }
 
-  function login(email, password) {
-    return auth.signInWithEmailAndPassword(email, password)
+  async function login(email, password) {
+    try {
+      let res = await auth.signInWithEmailAndPassword(email, password)
+      return res;
+    } catch(err) {
+      return {error: err};
+    }
+
+    // return auth.signInWithEmailAndPassword(email, password)
   }
 
   function logout() {
@@ -25,6 +32,16 @@ export function AuthProvider({ children }) {
 
   function resetPassword(email) {
     return auth.sendPasswordResetEmail(email)
+  }
+
+  const customErrorMessages = {
+    "auth/user-not-found": "User not found",
+  }
+
+  function getCustomErrorMessage(error) {
+    let errorMsg = customErrorMessages[error.code]
+
+    return errorMsg
   }
 
   useEffect(() => {
@@ -41,7 +58,8 @@ export function AuthProvider({ children }) {
     login,
     logout,
     signup,
-    resetPassword
+    resetPassword,
+    getCustomErrorMessage
   }
 
   return (
