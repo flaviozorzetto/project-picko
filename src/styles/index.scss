@@ -1,30 +1,74 @@
 @import 'variables';
 
 body {
-   font-family: 'Inter', sans-serif;
+	font-family: 'Inter', sans-serif;
 }
 
 .main {
-   padding-top: 64px;
+	padding-top: 64px;
 }
 
 .container {
-   max-width: 1140px;
-   margin: auto;
+	max-width: 1140px;
+	margin: auto;
 
-   @media screen and (max-width: 1200px) {
-      max-width: 960px;
-   }
+	@media screen and (max-width: 1200px) {
+		max-width: 960px;
+	}
 
-   @media screen and (max-width: 992px) {
-      max-width: 720px;
-   }
+	@media screen and (max-width: 992px) {
+		max-width: 720px;
+	}
 
-   @media screen and (max-width: 768px) {
-      max-width: 540px;
-   }
+	@media screen and (max-width: 768px) {
+		max-width: 540px;
+	}
 
-   @media screen and (max-width: 576px) {
-      max-width: 100%;
-   }
+	@media screen and (max-width: 576px) {
+		max-width: 100%;
+	}
+}
+
+.interview__list {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.filter-bar {
+	color: #838895;
+	display: flex;
+	align-items: center;
+	gap: 0 1rem;
+	margin: 2rem 0;
+	flex-wrap: wrap;
+
+	input {
+		font-family: 'Inter', sans-serif;
+		font-size: 1rem;
+		font-weight: 500;
+		color: #26272c;
+	}
+
+	input,
+	input:focus-visible {
+		border: none;
+		outline: none;
+	}
+
+	div {
+		width: 100%;
+	}
+}
+
+.filter-info {
+	color: #838895;
+	font-size: 0.9rem;
+	font-weight: 500;
+	margin-bottom: 1rem;
+
+	.bolder-info {
+		color: #26272c;
+	}
 }
