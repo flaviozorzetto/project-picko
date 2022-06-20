@@ -40,24 +40,23 @@ export default function Dashboard() {
             placeholder="Placeholder"
             type="checkbox"
             name="fname"
-            error={authError}
           >
             Label
           </TextArea> 
         </Form>
 
-        {/* <Form disabled={false} type="checkbox" name="check1" error={false}>
-          t
-        </Form> */}
+        <Form disabled={false} type="checkbox" name="check1" error={false}>
+          
+        </Form>
 
-          <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
-        <form>
+          {/* <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" /> */}
+        {/* <form> */}
           {/* <label htmlFor="vehicle1"> I have a bike</label>
           <input type="checkbox" id="vehicle2" name="vehicle2" value="Car"></input>
           <label htmlFor="vehicle2"> I have a car</label>
           <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat"></input>
           <label htmlFor="vehicle3"> I have a boat</label> */}
-        </form>
+        {/* </form> */}
 
       </div>
 

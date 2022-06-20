@@ -3,30 +3,48 @@ import "../styles/signup.css"
 import { useAuth } from "../contexts/AuthContext.js"
 import { Link, useNavigate } from "react-router-dom"
 
+import Form from "./Form/Form.js";
+import TextArea from "./TextArea/TextArea.js";
+import Button from "./Button/Button.js";
+
 export default function Signup() {
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordConfirmationError, setPasswordConfirmationError] = useState("");
+
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+  const { login, getCustomErrorMessage } = useAuth();
   const { signup } = useAuth();
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setEmailError("");
+    setPasswordError("");
+    setPasswordConfirmationError("");
 
     if(passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match")
+      return setPasswordConfirmationError("Passwords do not match")
+    }
+    
+    setLoading(true);
+    const res = await signup(emailRef.current.value, passwordRef.current.value);
+
+    if (res && res.error) {
+      let customError = getCustomErrorMessage(res.error);
+      console.log("test", customError)
+
+      if(customError.type == "email") {
+        setEmailError(customError.message);
+      } else if(customError.type == "password") {
+        setPasswordError(customError.message);
+      } else if(customError.type == "password-confirmation") {
+        setPasswordConfirmationError(customError.message)
+      }
     }
 
-    try {
-      setError("");
-      setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
-      navigate("/");
-    } catch {
-      setError("Failed to create an account")
-    }
     setLoading(false);
   }
 
@@ -34,23 +52,20 @@ export default function Signup() {
     <>
       <div className="container">
         <span>Sign up</span>
-        {error && <b>{error}</b>}
-        <form onSubmit={handleSubmit} className="signup-container">
-          <label htmlFor="email">email</label>
-          <input type="email" ref={emailRef} placeholder="Enter email" name="email" required></input>
 
-          <label htmlFor="password">Password</label>
-          <input type="password" ref={passwordRef} placeholder="Enter Password" name="password" required></input>
+        <Form onSubmit={handleSubmit}>
+          <TextArea inputRef={emailRef} required={true} type="email" name="email" placeholder="Enter email" disabled={false} error={emailError}></TextArea>
+          <TextArea inputRef={passwordRef} required={true} type="password" name="password" placeholder="Enter password" disabled={false} error={passwordError}></TextArea>
+          <TextArea inputRef={passwordConfirmRef} required={true} type="password" name="password-confirmation" placeholder="Confirm Password" disabled={false} error={passwordConfirmationError}></TextArea>
+          
+          <Button type="primary" size="s" disabled={loading}>
+            Sign up
+          </Button>
+        </Form>
 
-          <label htmlFor="password-confirmation">Confirm Password</label>
-          <input type="password" ref={passwordConfirmRef} placeholder="Confirm Password" name="password-confirmation" required></input>
-
-          <button disabled={loading}>Sign up</button>
-        </form>
-
-        <div>
+        <Button type="secondary" size="s" disabled={loading}>
           <Link to="/login">Sign in</Link>
-        </div>
+        </Button>
 
       </div>
     </>

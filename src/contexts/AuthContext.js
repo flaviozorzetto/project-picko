@@ -11,8 +11,15 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
 
-  function signup(email, password) {
-    return auth.createUserWithEmailAndPassword(email, password)
+  async function signup(email, password) {
+    try {
+      let res = await auth.createUserWithEmailAndPassword(email, password)
+      return res;
+    } catch(err) {
+      return {error: err};
+    }
+
+    // return auth.createUserWithEmailAndPassword(email, password)
   }
 
   async function login(email, password) {
@@ -30,18 +37,38 @@ export function AuthProvider({ children }) {
     return auth.signOut();
   }
 
-  function resetPassword(email) {
-    return auth.sendPasswordResetEmail(email)
+  async function resetPassword(email) {
+    try {
+      let res = await auth.sendPasswordResetEmail(email)
+      return res;
+    } catch(err) {
+      return {error: err};
+    }
   }
 
   const customErrorMessages = {
-    "auth/user-not-found": "User not found",
+    "auth/user-not-found": {
+      "message": "User not found",
+      "type": "email"
+    },
+    "auth/wrong-password": {
+      "message": "Wrong password",
+      "type": "password"
+    },
+    "auth/too-many-requests": {
+      "message": "Too many requests",
+      "type": "password"
+    },
+    "auth/email-already-in-use": {
+      "message": "Email already exists",
+      "type": "email"
+    },
   }
 
   function getCustomErrorMessage(error) {
     let errorMsg = customErrorMessages[error.code]
 
-    return errorMsg
+    return errorMsg ? errorMsg : "Failed to authenticate"
   }
 
   useEffect(() => {

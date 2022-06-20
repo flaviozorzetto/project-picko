@@ -1,35 +1,42 @@
-// input {
-//   outline: none;
-//   width: 200px;
-//   padding: 1rem;
+.text_input {
+  outline: none;
+  width: 200px;
+  padding: 1rem;
 
-//   border: 1px solid #e3e5e8;
-//   border-radius: 0.375rem;
+  border: 1px solid #e3e5e8;
+  border-radius: 0.375rem;
 
-//   font-family: "Inter";
-//   font-weight: 400;
-//   font-size: 1rem;
-//   line-height: 150%;
-//   color: #5e626e;
+  font-family: "Inter";
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 150%;
+  color: #5e626e;
 
-//   &::placeholder,
-//   &:disabled {
-//     color: #838895;
-//   }
+  &::placeholder,
+  &:disabled {
+    color: #838895;
+  }
 
-//   &:disabled {
-//     background-color: #e3e5e8;
-//   }
+  &:disabled {
+    background-color: #e3e5e8;
+  }
 
-//   &:active,
-//   &:focus,
-//   &:focus-visible {
-//     border: 1px solid #006446;
-//     color: #5e626e;
-//   }
+  &:active,
+  &:focus,
+  &:focus-visible {
+    border: 1px solid #006446;
+    color: #5e626e;
+  }
 
-//   &:invalid {
-//     border: 1px solid #ff1500;
-//     color: #ff1500;
-//   }
-// }
+  &_error {
+    border: 1px solid #ff1500;
+    color: #ff1500;
+
+    &:active,
+    &:focus,
+    &:focus-visible {
+      border: 1px solid #ff1500;
+      color: #ff1500;
+    }
+  }
+}

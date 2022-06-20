@@ -6,10 +6,9 @@ export default function Form(props) {
   // let authError = "Message of error"
 
   return (
-    <div className="form">
+    <form className="form" method={props.method} target={props.target} action={props.action} onSubmit={props.onSubmit}>
       {props.children}
-      {/* {authError && <span className="error_message">{authError}</span>} */}
-      {props.authError && <span className="form_error">{props.authError}</span>}
-    </div>
+      {props.authError && <span className="error_message">{props.authError}</span>}
+    </form>
   );
 }

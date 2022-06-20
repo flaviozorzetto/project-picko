@@ -3,42 +3,39 @@ import "../styles/signup.css";
 import { useAuth } from "../contexts/AuthContext.js";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "./Form/Form.js";
+import TextArea from "./TextArea/TextArea.js";
+import Button from "./Button/Button.js";
+import Card from "./Card/Card.js";
 
 export default function Login() {
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   const emailRef = useRef();
   const passwordRef = useRef();
   const { login, getCustomErrorMessage } = useAuth();
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setEmailError("");
+    setPasswordError("");
 
-    setError("");
     setLoading(true);
     const res = await login(emailRef.current.value, passwordRef.current.value);
 
-    if (res.error) {
-      console.log("error: ", res.error);
-      console.log("custom msg:", getCustomErrorMessage(res.error));
+    if (res && res.error) {
+      let customError = getCustomErrorMessage(res.error);
 
-      setError(getCustomErrorMessage(res.error));
+      if(customError.type == "email") {
+        setEmailError(customError.message);
+      } else if(customError.type == "password") {
+        setPasswordError(customError.message);
+      }
     } else {
       navigate("/");
     }
-
-    //
-    // try {
-    //   setError("");
-    //   setLoading(true);
-    //   console.log("LOADING1", loading)
-    //   await login(emailRef.current.value, passwordRef.current.value);
-    //   navigate("/");
-    // } catch {
-    //   setError("Failed to log in")
-    // }
-
     setLoading(false);
   }
 
@@ -46,63 +43,25 @@ export default function Login() {
     <>
       <div className="container">
         <span>Sign in</span>
-        {error && <b>{error}</b>}
 
-        {/* <Form
-          onSubmit={handleSubmit}
-          required={true}
-          pattern={"test"}
-          disabled={false}
-          placeholder="Placeholder"
-          type="text"
-          name="fname"
-          error={error}
-        >
-          Email
-        </Form> */}
+        <Form onSubmit={handleSubmit}>
+          <TextArea inputRef={emailRef} required={true} type="email" name="email" placeholder="Enter email" disabled={false} error={emailError}></TextArea>
+          <TextArea inputRef={passwordRef} required={true} type="password" name="password" placeholder="Enter password" disabled={false} error={passwordError}></TextArea>
+          
+          <Button type="primary" size="s" disabled={loading}>
+            Login
+          </Button>
 
-        {/* <Form
-         required={true}
-         pattern={"test"}
-         disabled={false}
-         placeholder="Placeholder"
-         type="text"
-         name="fname"
-         error={authError}>
-          Password
-        </Form> */}
+        </Form>
 
-        <form onSubmit={handleSubmit} className="signup-container">
-          <label htmlFor="email">email</label>
-          <input
-            type="email"
-            ref={emailRef}
-            placeholder="Enter email"
-            name="email"
-            required
-          ></input>
-
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            ref={passwordRef}
-            placeholder="Enter Password"
-            name="password"
-            required
-          ></input>
-
-          <button type="submit" disabled={loading}>
-            Log in
-          </button>
-        </form>
-
-        <div>
+        <Button type="secondary" size="s" disabled={loading}>
           <Link to="/forgot-password">Forgot Password?</Link>
-        </div>
+        </Button>
 
-        <div>
+        <Button type="secondary" size="s" disabled={loading}>
           <Link to="/signup">Sign up</Link>
-        </div>
+        </Button>
+
       </div>
     </>
   );
