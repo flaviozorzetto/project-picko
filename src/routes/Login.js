@@ -2,10 +2,9 @@ import React, { useRef, useState } from "react";
 import "../styles/signup.css";
 import { useAuth } from "../contexts/AuthContext.js";
 import { Link, useNavigate } from "react-router-dom";
-import Form from "./Form/Form.js";
-import TextArea from "./TextArea/TextArea.js";
-import Button from "./Button/Button.js";
-import Card from "./Card/Card.js";
+import Form from "../components/Form/Form.js";
+import TextArea from "../components/TextArea/TextArea.js";
+import Button from "../components/Button/Button.js";
 
 export default function Login() {
   const [emailError, setEmailError] = useState("");
@@ -45,8 +44,8 @@ export default function Login() {
         <span>Sign in</span>
 
         <Form onSubmit={handleSubmit}>
-          <TextArea inputRef={emailRef} required={true} type="email" name="email" placeholder="Enter email" disabled={false} error={emailError}></TextArea>
-          <TextArea inputRef={passwordRef} required={true} type="password" name="password" placeholder="Enter password" disabled={false} error={passwordError}></TextArea>
+          <TextArea inputRef={emailRef} required={true} type="email" name="email" placeholder="Enter email" disabled={false} error={emailError}>Label</TextArea>
+          <TextArea inputRef={passwordRef} required={true} type="password" name="password" placeholder="Enter password" disabled={false} error={passwordError}>Password</TextArea>
           
           <Button type="primary" size="s" disabled={loading}>
             Login

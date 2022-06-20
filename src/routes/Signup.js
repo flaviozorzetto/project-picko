@@ -3,9 +3,9 @@ import "../styles/signup.css"
 import { useAuth } from "../contexts/AuthContext.js"
 import { Link, useNavigate } from "react-router-dom"
 
-import Form from "./Form/Form.js";
-import TextArea from "./TextArea/TextArea.js";
-import Button from "./Button/Button.js";
+import Form from "../components/Form/Form.js";
+import TextArea from "../components/TextArea/TextArea.js";
+import Button from "../components/Button/Button.js";
 
 export default function Signup() {
   const [emailError, setEmailError] = useState("");
@@ -18,12 +18,17 @@ export default function Signup() {
   const { login, getCustomErrorMessage } = useAuth();
   const { signup } = useAuth();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
     setEmailError("");
     setPasswordError("");
     setPasswordConfirmationError("");
+
+    if(passwordRef.current.value.length < 6) {
+      return setPasswordError("Password must have at least 6 characters")
+    }
 
     if(passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setPasswordConfirmationError("Passwords do not match")
@@ -43,6 +48,8 @@ export default function Signup() {
       } else if(customError.type == "password-confirmation") {
         setPasswordConfirmationError(customError.message)
       }
+    } else {
+      navigate("/");
     }
 
     setLoading(false);

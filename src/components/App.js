@@ -1,11 +1,11 @@
 import React from "react";
-import Signup from "./Signup.js";
+import Signup from "../routes/Signup.js";
 import { AuthProvider } from "../contexts/AuthContext.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Dashboard from "./Dashboard.js";
-import Login from "./Login.js";
-import PrivateRoute from "./PrivateRoute.js";
-import ForgotPassword from "./ForgotPassword.js";
+import Dashboard from "../routes/Dashboard.js";
+import Login from "../routes/Login.js";
+import PrivateRoute from "../routes/PrivateRoute.js";
+import ForgotPassword from "../routes/ForgotPassword.js";
 
 export default function App() {
   return (

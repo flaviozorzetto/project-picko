@@ -3,9 +3,9 @@ import "../styles/signup.css"
 import { useAuth } from "../contexts/AuthContext.js"
 import { Link } from "react-router-dom"
 
-import Form from "./Form/Form.js";
-import TextArea from "./TextArea/TextArea.js";
-import Button from "./Button/Button.js";
+import Form from "../components/Form/Form.js";
+import TextArea from "../components/TextArea/TextArea.js";
+import Button from "../components/Button/Button.js";
 
 export default function ForgotPassword() {
   const [emailError, setEmailError] = useState("");

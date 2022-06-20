@@ -4,7 +4,7 @@ import React from "react";
 export default function TextArea(props) {
   return (
     <>
-      <label htmlFor={props.name}>{props.children}</label>
+      <label className="text_label" htmlFor={props.name}>{props.children}</label>
       <input
         className={`text_input${props.error ? " text_input_error" : ""}`}
         type={props.type}

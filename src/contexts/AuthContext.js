@@ -56,7 +56,7 @@ export function AuthProvider({ children }) {
       "type": "password"
     },
     "auth/too-many-requests": {
-      "message": "Too many requests",
+      "message": "Too many requests with this email. Please wait",
       "type": "password"
     },
     "auth/email-already-in-use": {

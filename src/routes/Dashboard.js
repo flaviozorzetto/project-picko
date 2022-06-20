@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext.js";
 import { useNavigate } from "react-router-dom";
 
-import Button from "./Button/Button.js";
-import Card from "./Card/Card.js";
-import Form from "./Form/Form.js";
-import TextArea from "./TextArea/TextArea.js";
+import Button from "../components/Button/Button.js";
+import Card from "../components/Card/Card.js";
+import Form from "../components/Form/Form.js";
+import TextArea from "../components/TextArea/TextArea.js";
+import Checkbox from "../components/Checkbox/Checkbox.js";
 
 import "../styles/index.scss";
 
@@ -34,30 +35,20 @@ export default function Dashboard() {
         </Button>
 
         <Form >
-          <TextArea 
-            required={true}
-            disabled={false}
-            placeholder="Placeholder"
-            type="checkbox"
-            name="fname"
-          >
-            Label
-          </TextArea> 
+          <TextArea required={true} type="email" name="email" placeholder="Enter email" disabled={false}>Label</TextArea>
+          <TextArea required={true} type="password" name="password" placeholder="Enter password" disabled={false}>Password</TextArea>
+
+          <Checkbox type="checkbox" name="checkbox" placeholder="Enter password" disabled={false} />
+          
+          <Button type="primary" size="s">
+            Login
+          </Button>
+
         </Form>
 
         <Form disabled={false} type="checkbox" name="check1" error={false}>
           
         </Form>
-
-          {/* <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" /> */}
-        {/* <form> */}
-          {/* <label htmlFor="vehicle1"> I have a bike</label>
-          <input type="checkbox" id="vehicle2" name="vehicle2" value="Car"></input>
-          <label htmlFor="vehicle2"> I have a car</label>
-          <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat"></input>
-          <label htmlFor="vehicle3"> I have a boat</label> */}
-        {/* </form> */}
-
       </div>
 
       <div>
