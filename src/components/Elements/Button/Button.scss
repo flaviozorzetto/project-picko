@@ -1,41 +1,63 @@
 .button_primary,
-.button_secondary {
-   border: none;
-   font-family: inherit;
-   border-radius: 0.5rem;
-   color: #006446;
-   padding: 0.5rem 1rem;
+.button_secondary,
+.button_danger {
+	border: none;
+	font-family: inherit;
+	border-radius: 0.5rem;
+	padding: 0.5rem 1rem;
 
-   &_m {
-      font-size: 1rem;
-      font-weight: 400;
-   }
+	&_m {
+		font-size: 1rem;
+		font-weight: 400;
+	}
 
-   &_s {
-      font-size: 0.9rem;
-      font-weight: 500;
-   }
+	&_s {
+		font-size: 0.9rem;
+		font-weight: 500;
+	}
 }
 
 .button_primary {
-   background: #dbff01;
+	background: #dbff01;
+	color: #006446;
 
-   &:hover {
-      background: #cef000;
-      cursor: pointer;
-   }
-
-   &:disabled {
-      background: #e3e5e8;
-      color: #838895;
-   }
+	&:hover {
+		background: #cef000;
+		cursor: pointer;
+	}
 }
 
 .button_secondary {
-   background: #ffffff;
+	background: #ffffff;
+	color: #006446;
 
-   &:hover {
-      background: #f4f4f6;
-      cursor: pointer;
-   }
+	&:hover {
+		background: #f4f4f6;
+		cursor: pointer;
+	}
+}
+
+.button_danger {
+	background: #ef5350;
+	color: #ffffff;
+
+	&:hover {
+		background: #e93835;
+		cursor: pointer;
+	}
+}
+
+.button_danger,
+.button_primary,
+.button_secondary {
+	&:disabled {
+		background: #e3e5e8;
+		color: #838895;
+	}
+}
+
+.button__content {
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
