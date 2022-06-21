@@ -1,6 +1,5 @@
 import './Button.scss';
-import parse from 'html-react-parser';
-import feather from 'feather-icons';
+import loadIcon from '../IconLoader/icon-loader.js';
 
 export default function Button(props) {
 	const svgProps = {
@@ -16,11 +15,9 @@ export default function Button(props) {
 		>
 			{props.iconLeft || props.iconRight ? (
 				<div className="button__content">
-					{props.iconLeft &&
-						parse(feather.icons[props.iconLeft].toSvg(svgProps))}
+					{props.iconLeft && loadIcon(props.iconLeft, svgProps)}
 					<span>{props.content}</span>
-					{props.iconRight &&
-						parse(feather.icons[props.iconRight].toSvg(svgProps))}
+					{props.iconRight && loadIcon(props.iconRight, svgProps)}
 				</div>
 			) : (
 				<span>{props.content}</span>
