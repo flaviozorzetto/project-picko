@@ -7,6 +7,7 @@ import Card from './components/Card/Card';
 import logo from './assets/svgs/logo.svg';
 import loadIcon from './components/Elements/IconLoader/icon-loader';
 import { useState } from 'react';
+import InterviewModal from './components/Modals/InterviewModal/InterviewModal';
 
 export default function PickoPage() {
 	const navIdentifier = 'nav-panel';
@@ -76,6 +77,8 @@ export default function PickoPage() {
 	const archivedCards = cards.filter(card => card.props.status === 'archived');
 	const activeCards = cards.filter(card => card.props.status !== 'archived');
 
+	const [interviewModalOpen, setInterviewModalOpen] = useState(false);
+
 	return (
 		<>
 			<header>
@@ -99,6 +102,9 @@ export default function PickoPage() {
 								size="m"
 								content="New interview"
 								iconRight="plus"
+								onClick={() => {
+									setInterviewModalOpen(true);
+								}}
 							/>
 						</Header>
 						<Tabs
@@ -156,6 +162,13 @@ export default function PickoPage() {
 						</TabPanel>
 					</TabPanel>
 				</section>
+				{interviewModalOpen && (
+					<InterviewModal
+						closeModal={() => {
+							setInterviewModalOpen(false);
+						}}
+					/>
+				)}
 			</main>
 		</>
 	);
