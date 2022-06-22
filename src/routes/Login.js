@@ -25,7 +25,7 @@ export default function Login() {
     const res = await login(emailRef.current.value, passwordRef.current.value);
 
     if (res && res.error) {
-      let customError = getCustomErrorMessage(res.error);
+      let customError = res.error;
 
       if(customError.type == "email") {
         setEmailError(customError.message);

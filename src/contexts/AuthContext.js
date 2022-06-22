@@ -16,10 +16,8 @@ export function AuthProvider({ children }) {
       let res = await auth.createUserWithEmailAndPassword(email, password)
       return res;
     } catch(err) {
-      return {error: err};
+      return {error: getCustomErrorMessage(err)};
     }
-
-    // return auth.createUserWithEmailAndPassword(email, password)
   }
 
   async function login(email, password) {
@@ -27,10 +25,8 @@ export function AuthProvider({ children }) {
       let res = await auth.signInWithEmailAndPassword(email, password)
       return res;
     } catch(err) {
-      return {error: err};
+      return {error: getCustomErrorMessage(err)};
     }
-
-    // return auth.signInWithEmailAndPassword(email, password)
   }
 
   function logout() {
@@ -42,25 +38,25 @@ export function AuthProvider({ children }) {
       let res = await auth.sendPasswordResetEmail(email)
       return res;
     } catch(err) {
-      return {error: err};
+      return {error: getCustomErrorMessage(err)};
     }
   }
 
   const customErrorMessages = {
     "auth/user-not-found": {
-      "message": "User not found",
+      "message": "User not found.",
       "type": "email"
     },
     "auth/wrong-password": {
-      "message": "Wrong password",
+      "message": "Wrong password.",
       "type": "password"
     },
     "auth/too-many-requests": {
-      "message": "Too many requests with this email. Please wait",
+      "message": "Too many requests with this email. Please wait.",
       "type": "password"
     },
     "auth/email-already-in-use": {
-      "message": "Email already exists",
+      "message": "Email already exists.",
       "type": "email"
     },
   }

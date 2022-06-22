@@ -38,8 +38,7 @@ export default function Signup() {
     const res = await signup(emailRef.current.value, passwordRef.current.value);
 
     if (res && res.error) {
-      let customError = getCustomErrorMessage(res.error);
-      console.log("test", customError)
+      let customError = res.error
 
       if(customError.type == "email") {
         setEmailError(customError.message);

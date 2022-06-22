@@ -23,7 +23,7 @@ export default function ForgotPassword() {
     const res = await resetPassword(emailRef.current.value);
 
     if (res && res.error) {
-      let customError = getCustomErrorMessage(res.error);
+      let customError = res.error
       setEmailError(customError.message);
     } else {
       setMessage("Check your inbox for further instructions")

@@ -35,10 +35,14 @@ export default function Dashboard() {
         </Button>
 
         <Form >
-          <TextArea required={true} type="email" name="email" placeholder="Enter email" disabled={false}>Label</TextArea>
-          <TextArea required={true} type="password" name="password" placeholder="Enter password" disabled={false}>Password</TextArea>
-
+          <TextArea iconLeft="search" iconRight="chevron-down" required={true} type="email" name="email" placeholder="Placeholder" disabled={true}>Label</TextArea>
+          <TextArea iconLeft="search" required={true} type="password" name="password" placeholder="Placeholder" disabled={false}>Label</TextArea>
+{/* 
+          <Checkbox type="checkbox" name="checkbox" placeholder="Enter password" disabled={true} />
+          <Checkbox type="checkbox" name="checkbox" placeholder="Enter password" disabled={true} />
           <Checkbox type="checkbox" name="checkbox" placeholder="Enter password" disabled={false} />
+          <Checkbox type="checkbox" name="checkbox" placeholder="Enter password" disabled={false} /> */}
+          <Checkbox type="checkbox" name="checkbox" placeholder="Enter password" disabled={false} checked/>
           
           <Button type="primary" size="s">
             Login
