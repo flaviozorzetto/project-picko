@@ -14,6 +14,8 @@ export function AuthProvider({ children }) {
   async function signup(email, password) {
     try {
       let res = await auth.createUserWithEmailAndPassword(email, password)
+      await res.user.sendEmailVerification();
+
       return res;
     } catch(err) {
       return {error: getCustomErrorMessage(err)};
@@ -23,6 +25,10 @@ export function AuthProvider({ children }) {
   async function login(email, password) {
     try {
       let res = await auth.signInWithEmailAndPassword(email, password)
+      if(!res.user.emailVerified) {
+        throw new Error("auth/email-not-verified");
+      }
+
       return res;
     } catch(err) {
       return {error: getCustomErrorMessage(err)};
@@ -43,13 +49,17 @@ export function AuthProvider({ children }) {
   }
 
   const customErrorMessages = {
+    "auth/email-not-verified": {
+      "message": "Your email isn't verified",
+      "type": "email"
+    },
     "auth/user-not-found": {
-      "message": "User not found.",
+      "message": "You have entered an invalid username or password",
       "type": "email"
     },
     "auth/wrong-password": {
-      "message": "Wrong password.",
-      "type": "password"
+      "message": "You have entered an invalid username or password",
+      "type": "email"
     },
     "auth/too-many-requests": {
       "message": "Too many requests with this email. Please wait.",

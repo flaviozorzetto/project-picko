@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import "../styles/signup.css"
 import { useAuth } from "../contexts/AuthContext.js"
 import { Link } from "react-router-dom"
 
@@ -10,8 +9,7 @@ import Button from "../components/Button/Button.js";
 export default function ForgotPassword() {
   const [emailError, setEmailError] = useState("");
   const emailRef = useRef();
-  const { resetPassword, getCustomErrorMessage } = useAuth();
-  const [error, setError] = useState("");
+  const { resetPassword } = useAuth();
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   

@@ -15,7 +15,7 @@
 }
 
 .input_container {
-  width: 200px;
+  width: 100%;
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -59,13 +59,11 @@
 
   &_error {
     border: 1px solid #ff1500;
-    color: #ff1500;
 
     &:active,
     &:focus,
     &:focus-visible {
       border: 1px solid #ff1500;
-      color: #ff1500;
     }
   }
 }
@@ -77,3 +75,18 @@
 .pr-50 {
   padding-right: 3.125rem;
 }
+
+.label-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.label-container span{
+  font-size: 10px;
+}
+
+// .text-area-container {
+   
+// }

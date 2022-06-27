@@ -1,14 +1,15 @@
 .form {
+  width: 100%;
   margin: 40px;
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 1rem;
   
   .error_message {
     width: 200px;
-    height: 17px;
+    height: fit-content;
     
     font-family: 'Inter';
     font-style: normal;
@@ -16,9 +17,5 @@
     font-size: 14px;
     line-height: 17px;
     color: #FF1500;
-  }
-
-  button {
-    margin-top: 16px;
   }
 }

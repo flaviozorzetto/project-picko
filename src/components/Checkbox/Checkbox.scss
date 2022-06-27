@@ -82,6 +82,7 @@
   border: 1.5px solid #ACB0B9;
   border-radius: 4px;
   background-color: #FFFFFF;
+  outline: 0;
 }
 
 .checkbox-label {
@@ -93,7 +94,7 @@
 
 
 .checkbox:focus ~ .checkbox-container-background {
-  background-color: #EEECEC;
+  background-color: #F3F2F2;
 }
 
 .checkbox:focus:checked ~ .checkbox-container-background {

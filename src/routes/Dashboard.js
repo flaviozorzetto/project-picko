@@ -42,7 +42,7 @@ export default function Dashboard() {
           <Checkbox type="checkbox" name="checkbox" placeholder="Enter password" disabled={true} />
           <Checkbox type="checkbox" name="checkbox" placeholder="Enter password" disabled={false} />
           <Checkbox type="checkbox" name="checkbox" placeholder="Enter password" disabled={false} /> */}
-          <Checkbox type="checkbox" name="checkbox" placeholder="Enter password" disabled={false} checked/>
+          <Checkbox type="checkbox" name="checkbox" placeholder="Enter password" disabled={false} checked={true}/>
           
           <Button type="primary" size="s">
             Login
@@ -61,6 +61,7 @@ export default function Dashboard() {
       </div>
 
       <div>
+        {authError && <span>{authError}</span>}
         <button onClick={handleLogout}>Log out</button>
       </div>
       <div>Dashboard</div>
