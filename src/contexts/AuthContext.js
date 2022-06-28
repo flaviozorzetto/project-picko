@@ -1,103 +1,113 @@
-import React, { useContext, useState, useEffect  } from 'react'
-import { auth } from "../firebase.js"
+import React, { useContext, useState, useEffect } from 'react';
+import { auth } from '../firebase.js';
 
 const AuthContext = React.createContext();
 
 export function useAuth() {
-  return useContext(AuthContext);
+	return useContext(AuthContext);
 }
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState();
-  const [loading, setLoading] = useState(true);
+	const [currentUser, setCurrentUser] = useState();
+	const [loading, setLoading] = useState(true);
 
-  async function signup(email, password) {
-    try {
-      let res = await auth.createUserWithEmailAndPassword(email, password)
-      await res.user.sendEmailVerification();
+	async function signup(signupObj) {
+		const { firstName, lastName, email, password, companyName, jobRole } = {
+			firstName: signupObj['first-name'].value,
+			lastName: signupObj['last-name'].value,
+			email: signupObj['email'].value,
+			password: signupObj['password'].value,
+			companyName: signupObj['company-name'].value,
+			jobRole: signupObj['job-role'].value,
+		};
 
-      return res;
-    } catch(err) {
-      return {error: getCustomErrorMessage(err)};
-    }
-  }
+		console.log(firstName, lastName, email, password, companyName, jobRole);
 
-  async function login(email, password) {
-    try {
-      let res = await auth.signInWithEmailAndPassword(email, password)
-      if(!res.user.emailVerified) {
-        throw new Error("auth/email-not-verified");
-      }
+		try {
+			// let res = await auth.createUserWithEmailAndPassword(email, password);
+			// await res.user.sendEmailVerification();
+			// return res;
+		} catch (err) {
+			return { error: getCustomErrorMessage(err) };
+		}
+	}
 
-      return res;
-    } catch(err) {
-      return {error: getCustomErrorMessage(err)};
-    }
-  }
+	async function login(email, password) {
+		try {
+			let res = await auth.signInWithEmailAndPassword(email, password);
+			if (!res.user.emailVerified) {
+				throw new Error('auth/email-not-verified');
+			}
 
-  function logout() {
-    return auth.signOut();
-  }
+			return res;
+		} catch (err) {
+			return { error: getCustomErrorMessage(err) };
+		}
+	}
 
-  async function resetPassword(email) {
-    try {
-      let res = await auth.sendPasswordResetEmail(email)
-      return res;
-    } catch(err) {
-      return {error: getCustomErrorMessage(err)};
-    }
-  }
+	function logout() {
+		return auth.signOut();
+	}
 
-  const customErrorMessages = {
-    "auth/email-not-verified": {
-      "message": "Your email isn't verified",
-      "type": "email"
-    },
-    "auth/user-not-found": {
-      "message": "You have entered an invalid username or password",
-      "type": "email"
-    },
-    "auth/wrong-password": {
-      "message": "You have entered an invalid username or password",
-      "type": "email"
-    },
-    "auth/too-many-requests": {
-      "message": "Too many requests with this email. Please wait.",
-      "type": "password"
-    },
-    "auth/email-already-in-use": {
-      "message": "Email already exists.",
-      "type": "email"
-    },
-  }
+	async function resetPassword(email) {
+		try {
+			let res = await auth.sendPasswordResetEmail(email);
+			return res;
+		} catch (err) {
+			return { error: getCustomErrorMessage(err) };
+		}
+	}
 
-  function getCustomErrorMessage(error) {
-    let errorMsg = customErrorMessages[error.code]
+	const customErrorMessages = {
+		'auth/email-not-verified': {
+			message: "Your email isn't verified",
+			type: 'email',
+		},
+		'auth/user-not-found': {
+			message: 'You have entered an invalid username or password',
+			type: 'email',
+		},
+		'auth/wrong-password': {
+			message: 'You have entered an invalid username or password',
+			type: 'email',
+		},
+		'auth/too-many-requests': {
+			message: 'Too many requests with this email. Please wait.',
+			type: 'password',
+		},
+		'auth/email-already-in-use': {
+			message: 'Email already exists.',
+			type: 'email',
+		},
+	};
 
-    return errorMsg ? errorMsg : "Failed to authenticate"
-  }
+	function getCustomErrorMessage(error) {
+		let errorMsg = customErrorMessages[error.code];
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      setCurrentUser(user);
-      setLoading(false)
-    })
+		return errorMsg ? errorMsg : 'Failed to authenticate';
+	}
 
-    return unsubscribe
-  }, [])
+	useEffect(() => {
+		const unsubscribe = auth.onAuthStateChanged(user => {
+			setCurrentUser(user);
+			setLoading(false);
+		});
 
-  const value = {
-    currentUser,
-    login,
-    logout,
-    signup,
-    resetPassword,
-    getCustomErrorMessage
-  }
+		return unsubscribe;
+	}, []);
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  )
+	const value = {
+		currentUser,
+		login,
+		logout,
+		signup,
+		resetPassword,
+		getCustomErrorMessage,
+	};
+
+	return (
+		<AuthContext.Provider value={value}>
+			{!loading && children}
+		</AuthContext.Provider>
+	);
 }
