@@ -43,7 +43,8 @@ export default function TextArea(props) {
         <label className="text_label" htmlFor={props.name}>{props.children}</label>
         <div className="input_container">
           <input
-            onChange={handleChange}
+            // onChange={handleChange}
+            onChange={props.onChange}
             className={`text_input${errorMessageDisplay ? " text_input_error" : ""}${props.iconLeft ? " pl-50" : ""}${props.iconRight ? " pr-50" : ""}`}
             type={props.type}
             ref={props.inputRef}

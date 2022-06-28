@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext.js"
 import { Link, useNavigate } from "react-router-dom"
 
@@ -10,27 +10,29 @@ import "./Signup.scss"
 import logo from "../assets/svgs/logo.svg";
 
 export default function Signup() {
+  
   const [step, setStep] = useState(1);
   const [input = {value: ""}, setInput] = useState()
-
+  
   // step 1
   // error state
-  const [state = { value: "" }, setStates] = useState({
-    firstName: { value: 0 },
-    lastName: { value: 0 },
-    email: { value: 0 },
+  
+  const [state, setStates] = useState({
+    "first-name": { value: null },
+    "last-name": { value: null },
+    "email": { value: null },
+    "password": { value: null },
+    "password-confirmation": { value: null },
+    "company-name": { value: null },
+    "job-role": { value: null },
+    "employee-quantity": { value: null },
   });
-
-  const [firstNameError = {value: ""}, setFirstNameError] = useState();
-
-  const [lastNameError, setLastNameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [passwordConfirmationError, setPasswordConfirmationError] = useState("");
-
+  
+  const [error, setError] = useState("");
   // input refs
 
   const handleChange = (event) => {
+    let stateName = event.target.name;
     setInput({value: event.target.value})
 
     // if(props.error) {
@@ -38,11 +40,15 @@ export default function Signup() {
     // }
     
     // console.log(event.target.value)
-    // setStates({
-    //   ...state, 
-    //   firstName: { value: event.target.value},
-    // })
+    setStates({
+      ...state,
+      [stateName]: { value: event.target.value},
+    })
   }
+
+  useEffect(() => {
+    console.log("!!!", state)
+  }, [state])
 
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -53,9 +59,6 @@ export default function Signup() {
 
   // step 2
   // error state
-  const [companyNameError, setCompanyNameError] = useState("");
-  const [jobRoleError, setJobRoleError] = useState("");
-
   // input refs
   const companyNameRef = useRef();
   const jobRoleRef = useRef();
@@ -67,32 +70,24 @@ export default function Signup() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setEmailError("");
-    setPasswordError("");
-    setPasswordConfirmationError("");
 
-    if(passwordRef.current.value.length < 6) {
-      return setPasswordError("Password must have at least 6 characters")
-    }
+    // if(passwordRef.current.value.length < 6) {
+    //   return setPasswordError("Password must have at least 6 characters")
+    // }
 
-    if(passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setPasswordConfirmationError("Passwords do not match")
-    }
+    // if(passwordRef.current.value !== passwordConfirmRef.current.value) {
+    //   return setPasswordConfirmationError("Passwords do not match")
+    // }
     
     setLoading(true);
-    const res = await signup(emailRef.current.value, passwordRef.current.value);
+    const res = await signup(state.email.value, state.password.value);
 
     if (res && res.error) {
-      let customError = res.error
+      let customError = res.error;
+      setError(customError);
+    } else {
 
-      if(customError.type === "email") {
-        setEmailError(customError.message);
-      } else if(customError.type === "password") {
-        setPasswordError(customError.message);
-      } else if(customError.type === "password-confirmation") {
-        setPasswordConfirmationError(customError.message)
-      }
-    } 
+    }
 
     setLoading(false);
   }
@@ -100,33 +95,42 @@ export default function Signup() {
   return (
     <>
       <div className="signup-page">
-        <img src={logo} className="logo"/>
 
         <div className="container">
-          <Form id="form-teste" onSubmit={handleSubmit}>
+          {step == 3 ? (
+            <>
+              <h3>Account created successfully</h3>
+              <span>We sent a confirmation email for you.</span>
+            </>
+          ) : (
+            <>
+              <img src={logo} className="logo"/>
+              <Form id="signup-form" onSubmit={handleSubmit}>
 
-            {step == 1 ? (
-              <>
-                <TextArea onChange={handleChange} inputRef={firstNameRef} required={true} type="text" name="first-name" disabled={false}>Name</TextArea>
-                <TextArea onChange={handleChange} inputRef={lastNameRef} required={true} type="text" name="last-name" disabled={false}>Last name</TextArea>
-    
-                <TextArea onChange={handleChange} inputRef={emailRef} required={true} type="email" name="email" disabled={false} error={emailError}>Email</TextArea>
-    
-                <TextArea inputRef={passwordRef} required={true} type="password" name="password" disabled={false} error={passwordError}>Password</TextArea>
-                <TextArea inputRef={passwordConfirmRef} required={true} type="password" name="password-confirmation" disabled={false} error={passwordConfirmationError}>Repeat password</TextArea>
-                <Button content="Continue" theme="primary" onClick={() => setStep(2)} size="s" disabled={loading} />
-              </>
-            ) : (
-              <>
-                <TextArea inputRef={companyNameRef} required={true} type="text" name="company-name" disabled={false} error={companyNameError}>Company name</TextArea>
-                <TextArea inputRef={jobRoleRef} required={true} type="text" name="password" disabled={false} error={jobRoleError}>Job role</TextArea>
-                <TextArea inputRef={employeeQuantityRef} required={true} type="checkbox" name="employeeQuantityRef" disabled={false}>How many employees?</TextArea>
+                {step == 1 ? (
+                  <>
+                    <TextArea onChange={handleChange} inputRef={firstNameRef} required={true} type="text" name="first-name" disabled={false}>Name</TextArea>
+                    <TextArea onChange={handleChange} inputRef={lastNameRef} required={true} type="text" name="last-name" disabled={false}>Last name</TextArea>
+        
+                    <TextArea onChange={handleChange} inputRef={emailRef} required={true} type="email" name="email" disabled={false} error={error}>Email</TextArea>
+        
+                    <TextArea onChange={handleChange} inputRef={passwordRef} required={true} type="password" name="password" disabled={false} error={error}>Password</TextArea>
+                    <TextArea onChange={handleChange} inputRef={passwordConfirmRef} required={true} type="password" name="password-confirmation" disabled={false} error={error}>Repeat password</TextArea>
+                    <Button content="Continue" type="button" theme="primary" onClick={() => setStep(2)} size="s" disabled={loading} />
+                  </>
+                ) : (
+                  <>
+                    <TextArea onChange={handleChange} inputRef={companyNameRef} required={true} type="text" name="company-name" disabled={false} error={error}>Company name</TextArea>
+                    <TextArea onChange={handleChange} inputRef={jobRoleRef} required={true} type="text" name="job-role" disabled={false} error={error}>Job role</TextArea>
+                    <TextArea onChange={handleChange} inputRef={employeeQuantityRef} required={true} type="checkbox" name="employee-quantity" disabled={false}>How many employees?</TextArea>
 
-                <Button content="Sign up" type="button" theme="primary" size="s" disabled={loading} />
-                <Button content="Back to step 1" type="button" theme="primary" onClick={() => setStep(1)} size="s" disabled={loading} />
-              </>
-            )}
-          </Form>
+                    <Button content="Sign up" type="submit" form="signup-form" theme="primary" size="s" disabled={loading} />
+                    <Button content="Back to step 1" type="button" theme="primary" onClick={() => setStep(1)} size="s" disabled={loading} />
+                  </>
+                )}
+              </Form>
+            </>
+          )}
 
           <Button content={<Link to="/login">Sign in</Link>} type="button" theme="secondary" size="s" disabled={loading} />
         </div>
