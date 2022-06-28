@@ -18,14 +18,14 @@ export default function Signup() {
   // error state
   
   const [state, setStates] = useState({
-    "first-name": { value: null },
-    "last-name": { value: null },
-    "email": { value: null },
-    "password": { value: null },
-    "password-confirmation": { value: null },
-    "company-name": { value: null },
-    "job-role": { value: null },
-    "employee-quantity": { value: null },
+    "first-name": { value: "" },
+    "last-name": { value: "" },
+    "email": { value: "" },
+    "password": { value: "" },
+    "password-confirmation": { value: "" },
+    "company-name": { value: "" },
+    "job-role": { value: "" },
+    "employee-quantity": { value: "" },
   });
   
   const [error, setError] = useState("");
@@ -42,7 +42,7 @@ export default function Signup() {
     // console.log(event.target.value)
     setStates({
       ...state,
-      [stateName]: { value: event.target.value},
+      [stateName]: { value: event.target.value },
     })
   }
 
@@ -109,20 +109,20 @@ export default function Signup() {
 
                 {step == 1 ? (
                   <>
-                    <TextArea onChange={handleChange} inputRef={firstNameRef} required={true} type="text" name="first-name" disabled={false}>Name</TextArea>
-                    <TextArea onChange={handleChange} inputRef={lastNameRef} required={true} type="text" name="last-name" disabled={false}>Last name</TextArea>
+                    <TextArea onChange={handleChange} value={state["first-name"].value} required={true} id="1" type="text" name="first-name" disabled={false}>Name</TextArea>
+                    <TextArea onChange={handleChange} value={state["last-name"].value} required={true} type="text" name="last-name" disabled={false}>Last name</TextArea>
         
-                    <TextArea onChange={handleChange} inputRef={emailRef} required={true} type="email" name="email" disabled={false} error={error}>Email</TextArea>
+                    <TextArea onChange={handleChange} value={state["email" ].value} required={true} type="email" name="email" disabled={false} error={error}>Email</TextArea>
         
-                    <TextArea onChange={handleChange} inputRef={passwordRef} required={true} type="password" name="password" disabled={false} error={error}>Password</TextArea>
-                    <TextArea onChange={handleChange} inputRef={passwordConfirmRef} required={true} type="password" name="password-confirmation" disabled={false} error={error}>Repeat password</TextArea>
+                    <TextArea onChange={handleChange} value={state["password"].value} required={true} type="password" name="password" disabled={false} error={error}>Password</TextArea>
+                    <TextArea onChange={handleChange} value={state["password-confirmation"].value} required={true} type="password" name="password-confirmation" disabled={false} error={error}>Repeat password</TextArea>
                     <Button content="Continue" type="button" theme="primary" onClick={() => setStep(2)} size="s" disabled={loading} />
                   </>
                 ) : (
                   <>
-                    <TextArea onChange={handleChange} inputRef={companyNameRef} required={true} type="text" name="company-name" disabled={false} error={error}>Company name</TextArea>
-                    <TextArea onChange={handleChange} inputRef={jobRoleRef} required={true} type="text" name="job-role" disabled={false} error={error}>Job role</TextArea>
-                    <TextArea onChange={handleChange} inputRef={employeeQuantityRef} required={true} type="checkbox" name="employee-quantity" disabled={false}>How many employees?</TextArea>
+                    <TextArea onChange={handleChange} value={state["company-name"].value} required={true} id="2" type="text" name="company-name" disabled={false} error={error}>Company name</TextArea>
+                    <TextArea onChange={handleChange} value={state["job-role"].value} required={true} type="text" name="job-role" disabled={false} error={error}>Job role</TextArea>
+                    <TextArea onChange={handleChange} value={state["employee-quantity"].value} required={true} type="checkbox" name="employee-quantity" disabled={false}>How many employees?</TextArea>
 
                     <Button content="Sign up" type="submit" form="signup-form" theme="primary" size="s" disabled={loading} />
                     <Button content="Back to step 1" type="button" theme="primary" onClick={() => setStep(1)} size="s" disabled={loading} />
