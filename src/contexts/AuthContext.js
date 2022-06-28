@@ -51,23 +51,28 @@ export function AuthProvider({ children }) {
   const customErrorMessages = {
     "auth/email-not-verified": {
       "message": "Your email isn't verified",
-      "type": "email"
+      "type": "email",
+      "scope": "global"
     },
     "auth/user-not-found": {
       "message": "You have entered an invalid username or password",
-      "type": "email"
+      "type": "email",
+      "scope": "global"
     },
     "auth/wrong-password": {
       "message": "You have entered an invalid username or password",
-      "type": "email"
+      "type": "email",
+      "scope": "global"
     },
     "auth/too-many-requests": {
       "message": "Too many requests with this email. Please wait.",
-      "type": "password"
+      "type": "password",
+      "scope": "global"
     },
     "auth/email-already-in-use": {
       "message": "Email already exists.",
-      "type": "email"
+      "type": "email",
+      "scope": "global"
     },
   }
 

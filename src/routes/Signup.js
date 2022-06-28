@@ -12,7 +12,16 @@ import logo from "../assets/svgs/logo.svg";
 export default function Signup() {
   
   const [step, setStep] = useState(1);
-  const [input = {value: ""}, setInput] = useState()
+  
+  const backToPreviousStep = () => {
+    setStep(step--);
+  }
+
+  const validateForNextStep = () => {
+    if(validateLocalInputs()) {
+      setStep(step++);
+    }
+  }
   
   // step 1
   // error state
@@ -33,62 +42,59 @@ export default function Signup() {
 
   const handleChange = (event) => {
     let stateName = event.target.name;
-    setInput({value: event.target.value})
 
     // if(props.error) {
     //   setErrorMessageDisplay(false);
     // }
     
-    // console.log(event.target.value)
     setStates({
       ...state,
       [stateName]: { value: event.target.value },
     })
   }
 
-  useEffect(() => {
-    console.log("!!!", state)
-  }, [state])
-
-  const firstNameRef = useRef();
-  const lastNameRef = useRef();
-
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
+  // useEffect(() => {
+  //   console.log("!!!", state)
+  // }, [state])
 
   // step 2
-  // error state
   // input refs
-  const companyNameRef = useRef();
-  const jobRoleRef = useRef();
-  const employeeQuantityRef = useRef();
 
   const { signup } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  async function handleSubmit(e) {
+  const validateLocalInputs = () => {
+    if(state["password"].value.length < 6) {
+      console.log("SETSTEP!", step)
+      console.log("PLAU")
+      return setError({
+        "message": "Password must have at least 6 characters",
+        "type": "password",
+        "scope": "local"
+      })
+    } else if(state["password"].value !== state["password-confirmation"].value) {
+      return setError({
+        "message": "Passwords do not match",
+        "type": "password-confirmation",
+        "scope": "local"
+      })
+    } else {
+      return true
+    }
+  }
+
+  const handleSubmit = async(e) => {
+    if(!validateLocalInputs()) return;
+
     e.preventDefault();
-
-    // if(passwordRef.current.value.length < 6) {
-    //   return setPasswordError("Password must have at least 6 characters")
-    // }
-
-    // if(passwordRef.current.value !== passwordConfirmRef.current.value) {
-    //   return setPasswordConfirmationError("Passwords do not match")
-    // }
-    
     setLoading(true);
     const res = await signup(state.email.value, state.password.value);
 
     if (res && res.error) {
       let customError = res.error;
       setError(customError);
-    } else {
-
     }
-
     setLoading(false);
   }
 
@@ -116,16 +122,16 @@ export default function Signup() {
         
                     <TextArea onChange={handleChange} value={state["password"].value} required={true} type="password" name="password" disabled={false} error={error}>Password</TextArea>
                     <TextArea onChange={handleChange} value={state["password-confirmation"].value} required={true} type="password" name="password-confirmation" disabled={false} error={error}>Repeat password</TextArea>
-                    <Button content="Continue" type="button" theme="primary" onClick={() => setStep(2)} size="s" disabled={loading} />
+                    <Button content="Continue" type="button" theme="primary" onClick={() => validateForNextStep()} size="s" disabled={loading} />
                   </>
                 ) : (
                   <>
-                    <TextArea onChange={handleChange} value={state["company-name"].value} required={true} id="2" type="text" name="company-name" disabled={false} error={error}>Company name</TextArea>
-                    <TextArea onChange={handleChange} value={state["job-role"].value} required={true} type="text" name="job-role" disabled={false} error={error}>Job role</TextArea>
-                    <TextArea onChange={handleChange} value={state["employee-quantity"].value} required={true} type="checkbox" name="employee-quantity" disabled={false}>How many employees?</TextArea>
+                    <TextArea onChange={handleChange} value={state["company-name"].value} required={true} id="2" type="text" name="company-name" disabled={false}>Company name</TextArea>
+                    <TextArea onChange={handleChange} value={state["job-role"].value} required={true} type="text" name="job-role" disabled={false}>Job role</TextArea>
+                    {/* <TextArea onChange={handleChange} value={state["employee-quantity"].value} required={true} type="checkbox" name="employee-quantity" disabled={false}>How many employees?</TextArea> */}
 
-                    <Button content="Sign up" type="submit" form="signup-form" theme="primary" size="s" disabled={loading} />
-                    <Button content="Back to step 1" type="button" theme="primary" onClick={() => setStep(1)} size="s" disabled={loading} />
+                    <Button content="Sign up" type="submit" form="signup-form" theme="primary" onClick={() => validateForNextStep()} size="s" disabled={loading} />
+                    <Button content="Back to step 1" type="button" theme="primary" onClick={() => backToPreviousStep()} size="s" disabled={loading} />
                   </>
                 )}
               </Form>

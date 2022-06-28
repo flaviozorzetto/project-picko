@@ -5,18 +5,20 @@ export default function Form(props) {
   const validateAndSubmit = async (e) => {
     e.preventDefault()
     
-    // for(let i = 0; i < e.target.length; i++) {
-    //   let input = e.target[i]
-    //   let error = document.getElementsByClassName(`${input.id}`)[0]
+    for(let i = 0; i < e.target.length; i++) {
+      let input = e.target[i]
+      let error = document.getElementsByClassName(`${input.id}`)[0] // vai pegar todos os elementos q são inputs
       
-    //   // error.style.display = "none"
+      
+      // if(input.type == "email") {
+      //   // *regra pra validação*
 
-    //   // if(input.type == "email") {
-
-    //   // } else if(input.type == "password") {
-
-    //   // }
-    // }
+      //   // error.style.display = "block"
+      //   // input.classList.add("error_message");
+      // } else if(input.type == "password") {
+      //   // *regra pra validação*
+      // }
+    }
 
     await props.onSubmit(e)
   }

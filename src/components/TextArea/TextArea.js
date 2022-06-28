@@ -4,16 +4,17 @@ import { Link, useNavigate } from "react-router-dom";
 import "./TextArea.scss"
 
 export default function TextArea(props) {
-  const [input = {value: ""}, setInput] = useState()
-  const [errorMessageDisplay, setErrorMessageDisplay] = useState(props.error);
+  const [errorMessageDisplay, setErrorMessageDisplay] = useState(props.error == true);
 
   useEffect(() => {
+    console.log("passei aqui!", props.error)
+
     if(props.error) {
       setErrorMessageDisplay(true);
     }
   }, [props.error])
 
-  const handleChange = (event) => {
+  const handleInput = (event) => {
     if(props.error) {
       setErrorMessageDisplay(false);
     }
@@ -31,25 +32,19 @@ export default function TextArea(props) {
 
   return (
     <>
-      {errorMessageDisplay && 
-        <div className="error_message-container">
-          <span className="error_message">{props.error}</span>
-        </div>
-      }
-
       <div className="text-area-container">
         <label className="text_label" htmlFor={props.name}>{props.children}</label>
         <div className="input_container">
           <input
             value={props.value}
+            onInput={handleInput}
             onChange={props.onChange}
-            className={`text_input${errorMessageDisplay ? " text_input_error" : ""}${props.iconLeft ? " pl-50" : ""}${props.iconRight ? " pr-50" : ""}`}
+            className={`text_input${errorMessageDisplay && props.error.scope == "local" && props.error.type == props.name ? " text_input_error" : ""}${props.iconLeft ? " pl-50" : ""}${props.iconRight ? " pr-50" : ""}`}
             type={props.type}
             ref={props.inputRef}
             placeholder={props.placeholder}
             name={props.name}
             required={props.required}
-            error={props.error}
             disabled={props.disabled}
             id={props.name}
           ></input>
@@ -57,10 +52,12 @@ export default function TextArea(props) {
           {props.iconRight && <i className="icon-right">{loadIcon(props.iconRight)}</i>}
         </div>
       </div>
+      {errorMessageDisplay && props.error.scope == "local" && props.error.type == props.name &&
+        <div className="error_message-container">
+          <span className="error_message">{props.error.message}</span>
+        </div>
+      }
 
-      {/* <div className={`error_message-container ${props.name}`}>
-        <span className="error_message"></span>
-      </div> */}
     </>
   )
 }
