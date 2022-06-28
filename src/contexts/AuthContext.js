@@ -22,8 +22,7 @@ export function AuthProvider({ children }) {
 			jobRole: signupObj['job-role'].value,
 		};
 
-		const { firstName, lastName, email, password, companyName, jobRole } =
-			userInfo;
+		const { firstName, lastName, email, password, companyName, jobRole } = userInfo;
 
 		try {
 			let res = await auth.createUserWithEmailAndPassword(email, password);
@@ -47,7 +46,6 @@ export function AuthProvider({ children }) {
 			if (!res.user.emailVerified) {
 				throw new Error('auth/email-not-verified');
 			}
-
 			return res;
 		} catch (err) {
 			return { error: getCustomErrorMessage(err) };
@@ -93,9 +91,15 @@ export function AuthProvider({ children }) {
 		  "type": "email",
 		  "scope": "global"
 		},
+		"auth/invalid-email" : {
+			"message": "Your email is badly formatted",
+			"type": "email",
+			"scope": "local"
+		}
 	  }
 
 	function getCustomErrorMessage(error) {
+		// console.log("teste", error)
 		let errorMsg = customErrorMessages[error.code];
 
 		return errorMsg ? errorMsg : 'Failed to authenticate';

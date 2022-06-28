@@ -9,40 +9,42 @@ import "./Login.scss";
 import logo from "../assets/svgs/logo.svg";
 
 export default function Login() {
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [state, setStates] = useState({
+    "email": { value: "" },
+    "password": { value: "" },
+  });
 
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const [error, setError] = useState("");
+
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleChange = (event) => {
+    let stateName = event.target.name;
+
+    setStates({
+      ...state,
+      [stateName]: { value: event.target.value },
+    })
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
-    setEmailError("");
-    setPasswordError("");
+    setError("")
 
     setLoading(true);
-    const res = await login(emailRef.current.value, passwordRef.current.value);
+    const res = await login(state.email.value, state.password.value);
 
     if (res && res.error) {
+      console.log(res.error)
       let customError = res.error;
-
-      if(customError.type === "email") {
-        setEmailError(customError.message);
-      } else if(customError.type === "password") {
-        setPasswordError(customError.message);
-      }
+      setError(customError)
     } else {
       navigate("/");
     }
     setLoading(false);
   }
-
-  // useEffect(() => {
-        
-  // }, [emailError])
 
   return (
     <>
@@ -50,22 +52,17 @@ export default function Login() {
         <div className="container">
           <img src={logo} className="logo"/>
 
-          <Form onSubmit={handleSubmit}>
-            <TextArea inputRef={emailRef} required={true} type="email" name="email" disabled={false} error={emailError}>Email</TextArea>
-            <TextArea inputRef={passwordRef} required={true} type="password" name="password" disabled={false} error={passwordError}>Password</TextArea>
+          <Form onSubmit={handleSubmit} error={error}>
+            <TextArea onChange={handleChange} required={true} type="email" name="email" disabled={false} error={error}>Email</TextArea>
+            <TextArea onChange={handleChange} required={true} type="password" name="password" disabled={false} error={error}>Password</TextArea>
             
-            <Button type="primary" size="b" disabled={loading}>
-              Continue
-            </Button>
+            <Button content="Continue" theme="primary" size="b" disabled={loading}/>
 
           </Form>
-          <Button type="secondary" size="s" disabled={loading}>
-            No accounting? Sign up <Link to="/signup">here</Link>
-          </Button>
+          <Button content={<Link to="/signup">No accounting? Sign up here</Link>} theme="secondary" size="s" disabled={loading} />
+          {/* <Button content={No accounting? Sign up <Link to="/signup">here</Link>}type="secondary" size="s" disabled={loading} /> */}
 
-          <Button type="secondary" size="s" disabled={loading}>
-            <Link to="/forgot-password">Forgot your password?</Link>
-          </Button>
+          <Button content={<Link to="/forgot-password">Forgot your password?</Link>} theme="secondary" size="s" disabled={loading} />
         </div>
       </div>
     </>

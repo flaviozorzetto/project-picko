@@ -1,30 +1,27 @@
 import "./Form.scss";
 import React, { useState, useEffect } from "react";
+import Banner from "../../components/Banner/Banner.js"
 
 export default function Form(props) {
-  const validateAndSubmit = async (e) => {
-    e.preventDefault()
-    
-    for(let i = 0; i < e.target.length; i++) {
-      let input = e.target[i]
-      let error = document.getElementsByClassName(`${input.id}`)[0] // vai pegar todos os elementos q são inputs
-      
-      
-      // if(input.type == "email") {
-      //   // *regra pra validação*
+  const [errorMessageDisplay, setErrorMessageDisplay] = useState("")
 
-      //   // error.style.display = "block"
-      //   // input.classList.add("error_message");
-      // } else if(input.type == "password") {
-      //   // *regra pra validação*
-      // }
-    }
+  // useEffect(() => {
+  //   if(props.error) {
+  //     setErrorMessageDisplay(true)
+  //   }
+  // }, [props.error])
 
-    await props.onSubmit(e)
-  }
+  // const handleChange = (e) => {
+  //   setErrorMessageDisplay(false)
+  // }
 
   return (
-    <form noValidate id={props.id} className="form" method={props.method} target={props.target} action={props.action} onSubmit={validateAndSubmit}>
+    <form noValidate id={props.id} className="form" method={props.method} target={props.target} action={props.action} onSubmit={props.onSubmit}>
+      {/* errorMessageDisplay &&  */}
+      {props.error && props.error.scope == "global" &&
+        <Banner iconLeft="search" theme="danger" content={props.error.message} />
+      }
+
       {props.children}
     </form>
   );

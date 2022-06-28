@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext.js"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import Form from "../components/Form/Form.js";
 import TextArea from "../components/TextArea/TextArea.js";
@@ -10,21 +10,15 @@ import "./Signup.scss"
 import logo from "../assets/svgs/logo.svg";
 
 export default function Signup() {
-  
   const [step, setStep] = useState(1);
   
-  const backToPreviousStep = () => {
-    setStep(step--);
-  }
+  const backToPreviousStep = () => setStep(step - 1);
 
   const validateForNextStep = () => {
     if(validateLocalInputs()) {
-      setStep(step++);
+      setStep(step + 1);
     }
   }
-  
-  // step 1
-  // error state
   
   const [state, setStates] = useState({
     "first-name": { value: "" },
@@ -38,8 +32,6 @@ export default function Signup() {
   });
   
   const [error, setError] = useState("");
-  // input refs
-
   const handleChange = (event) => {
     let stateName = event.target.name;
 
@@ -53,21 +45,15 @@ export default function Signup() {
     })
   }
 
-  // useEffect(() => {
-  //   console.log("!!!", state)
-  // }, [state])
-
-  // step 2
-  // input refs
+  useEffect(() => {
+    console.log("!!!", state)
+  }, [state])
 
   const { signup } = useAuth();
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const validateLocalInputs = () => {
     if(state["password"].value.length < 6) {
-      console.log("SETSTEP!", step)
-      console.log("PLAU")
       return setError({
         "message": "Password must have at least 6 characters",
         "type": "password",
@@ -86,10 +72,11 @@ export default function Signup() {
 
   const handleSubmit = async(e) => {
     if(!validateLocalInputs()) return;
+    setStep(step + 1);
 
     e.preventDefault();
     setLoading(true);
-    const res = await signup(state.email.value, state.password.value);
+    const res = await signup(state);
 
     if (res && res.error) {
       let customError = res.error;
@@ -111,7 +98,7 @@ export default function Signup() {
           ) : (
             <>
               <img src={logo} className="logo"/>
-              <Form id="signup-form" onSubmit={handleSubmit}>
+              <Form id="signup-form" onSubmit={handleSubmit} error={error} >
 
                 {step == 1 ? (
                   <>
@@ -128,9 +115,9 @@ export default function Signup() {
                   <>
                     <TextArea onChange={handleChange} value={state["company-name"].value} required={true} id="2" type="text" name="company-name" disabled={false}>Company name</TextArea>
                     <TextArea onChange={handleChange} value={state["job-role"].value} required={true} type="text" name="job-role" disabled={false}>Job role</TextArea>
-                    {/* <TextArea onChange={handleChange} value={state["employee-quantity"].value} required={true} type="checkbox" name="employee-quantity" disabled={false}>How many employees?</TextArea> */}
+                    <TextArea onChange={handleChange} value={state["employee-quantity"].value} required={true} type="checkbox" name="employee-quantity" disabled={false}>How many employees?</TextArea>
 
-                    <Button content="Sign up" type="submit" form="signup-form" theme="primary" onClick={() => validateForNextStep()} size="s" disabled={loading} />
+                    <Button content="Sign up" type="submit" form="signup-form" theme="primary" size="s" disabled={loading} />
                     <Button content="Back to step 1" type="button" theme="primary" onClick={() => backToPreviousStep()} size="s" disabled={loading} />
                   </>
                 )}
@@ -138,7 +125,7 @@ export default function Signup() {
             </>
           )}
 
-          <Button content={<Link to="/login">Sign in</Link>} type="button" theme="secondary" size="s" disabled={loading} />
+          {/* <Button content={<Link to="/login">Sign in</Link>} type="button" theme="secondary" size="s" disabled={loading} /> */}
         </div>
       </div>
     </>
