@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
+import { createUserDocument } from '../components/Manager/Firebase.js';
 
 const AuthContext = React.createContext();
 
@@ -12,7 +13,7 @@ export function AuthProvider({ children }) {
 	const [loading, setLoading] = useState(true);
 
 	async function signup(signupObj) {
-		const { firstName, lastName, email, password, companyName, jobRole } = {
+		const userInfo = {
 			firstName: signupObj['first-name'].value,
 			lastName: signupObj['last-name'].value,
 			email: signupObj['email'].value,
@@ -21,12 +22,20 @@ export function AuthProvider({ children }) {
 			jobRole: signupObj['job-role'].value,
 		};
 
-		console.log(firstName, lastName, email, password, companyName, jobRole);
+		const { firstName, lastName, email, password, companyName, jobRole } =
+			userInfo;
 
 		try {
-			// let res = await auth.createUserWithEmailAndPassword(email, password);
-			// await res.user.sendEmailVerification();
-			// return res;
+			let res = await auth.createUserWithEmailAndPassword(email, password);
+			const uid = res.user.uid;
+			await res.user.sendEmailVerification();
+
+			await createUserDocument({
+				uid,
+				...userInfo,
+			});
+
+			return res;
 		} catch (err) {
 			return { error: getCustomErrorMessage(err) };
 		}
