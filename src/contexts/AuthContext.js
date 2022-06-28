@@ -1,108 +1,127 @@
-import React, { useContext, useState, useEffect  } from 'react'
-import { auth } from "../firebase.js"
+import React, { useContext, useState, useEffect } from 'react';
+import { auth } from '../firebase.js';
+import { createUserDocument } from '../components/Manager/Firebase.js';
 
 const AuthContext = React.createContext();
 
 export function useAuth() {
-  return useContext(AuthContext);
+	return useContext(AuthContext);
 }
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState();
-  const [loading, setLoading] = useState(true);
+	const [currentUser, setCurrentUser] = useState();
+	const [loading, setLoading] = useState(true);
 
-  async function signup(email, password) {
-    try {
-      let res = await auth.createUserWithEmailAndPassword(email, password)
-      await res.user.sendEmailVerification();
+	async function signup(signupObj) {
+		const userInfo = {
+			firstName: signupObj['first-name'].value,
+			lastName: signupObj['last-name'].value,
+			email: signupObj['email'].value,
+			password: signupObj['password'].value,
+			companyName: signupObj['company-name'].value,
+			jobRole: signupObj['job-role'].value,
+		};
 
-      return res;
-    } catch(err) {
-      return {error: getCustomErrorMessage(err)};
-    }
-  }
+		const { firstName, lastName, email, password, companyName, jobRole } =
+			userInfo;
 
-  async function login(email, password) {
-    try {
-      let res = await auth.signInWithEmailAndPassword(email, password)
-      if(!res.user.emailVerified) {
-        throw new Error("auth/email-not-verified");
-      }
+		try {
+			let res = await auth.createUserWithEmailAndPassword(email, password);
+			const uid = res.user.uid;
+			await res.user.sendEmailVerification();
 
-      return res;
-    } catch(err) {
-      return {error: getCustomErrorMessage(err)};
-    }
-  }
+			await createUserDocument({
+				uid,
+				...userInfo,
+			});
 
-  function logout() {
-    return auth.signOut();
-  }
+			return res;
+		} catch (err) {
+			return { error: getCustomErrorMessage(err) };
+		}
+	}
 
-  async function resetPassword(email) {
-    try {
-      let res = await auth.sendPasswordResetEmail(email)
-      return res;
-    } catch(err) {
-      return {error: getCustomErrorMessage(err)};
-    }
-  }
+	async function login(email, password) {
+		try {
+			let res = await auth.signInWithEmailAndPassword(email, password);
+			if (!res.user.emailVerified) {
+				throw new Error('auth/email-not-verified');
+			}
 
-  const customErrorMessages = {
-    "auth/email-not-verified": {
-      "message": "Your email isn't verified",
-      "type": "email",
-      "scope": "global"
-    },
-    "auth/user-not-found": {
-      "message": "You have entered an invalid username or password",
-      "type": "email",
-      "scope": "global"
-    },
-    "auth/wrong-password": {
-      "message": "You have entered an invalid username or password",
-      "type": "email",
-      "scope": "global"
-    },
-    "auth/too-many-requests": {
-      "message": "Too many requests with this email. Please wait.",
-      "type": "password",
-      "scope": "global"
-    },
-    "auth/email-already-in-use": {
-      "message": "Email already exists.",
-      "type": "email",
-      "scope": "global"
-    },
-  }
+			return res;
+		} catch (err) {
+			return { error: getCustomErrorMessage(err) };
+		}
+	}
+	
+	function logout() {
+		return auth.signOut();
+	}
 
-  function getCustomErrorMessage(error) {
-    let errorMsg = customErrorMessages[error.code]
+	async function resetPassword(email) {
+		try {
+			let res = await auth.sendPasswordResetEmail(email);
+			return res;
+		} catch (err) {
+			return { error: getCustomErrorMessage(err) };
+		}
+	}
 
-    return errorMsg ? errorMsg : "Failed to authenticate"
-  }
+	const customErrorMessages = {
+		"auth/email-not-verified": {
+		  "message": "Your email isn't verified",
+		  "type": "email",
+		  "scope": "global"
+		},
+		"auth/user-not-found": {
+		  "message": "You have entered an invalid username or password",
+		  "type": "email",
+		  "scope": "global"
+		},
+		"auth/wrong-password": {
+		  "message": "You have entered an invalid username or password",
+		  "type": "email",
+		  "scope": "global"
+		},
+		"auth/too-many-requests": {
+		  "message": "Too many requests with this email. Please wait.",
+		  "type": "password",
+		  "scope": "global"
+		},
+		"auth/email-already-in-use": {
+		  "message": "Email already exists.",
+		  "type": "email",
+		  "scope": "global"
+		},
+	  }
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      setCurrentUser(user);
-      setLoading(false)
-    })
+	function getCustomErrorMessage(error) {
+		let errorMsg = customErrorMessages[error.code];
 
-    return unsubscribe
-  }, [])
+		return errorMsg ? errorMsg : 'Failed to authenticate';
+	}
 
-  const value = {
-    currentUser,
-    login,
-    logout,
-    signup,
-    resetPassword,
-    getCustomErrorMessage
-  }
+	useEffect(() => {
+		const unsubscribe = auth.onAuthStateChanged(user => {
+			setCurrentUser(user);
+			setLoading(false);
+		});
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  )
+		return unsubscribe;
+	}, []);
+
+	const value = {
+		currentUser,
+		login,
+		logout,
+		signup,
+		resetPassword,
+		getCustomErrorMessage,
+	};
+
+	return (
+		<AuthContext.Provider value={value}>
+			{!loading && children}
+		</AuthContext.Provider>
+	);
 }
