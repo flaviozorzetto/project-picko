@@ -1,6 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
-import { createUserDocument } from '../components/Manager/Firebase.js';
+import {
+	createUserDocument,
+	queryUser,
+} from '../components/Manager/Firebase.js';
 
 const AuthContext = React.createContext();
 
@@ -22,7 +25,8 @@ export function AuthProvider({ children }) {
 			jobRole: signupObj['job-role'].value,
 		};
 
-		const { firstName, lastName, email, password, companyName, jobRole } = userInfo;
+		const { firstName, lastName, email, password, companyName, jobRole } =
+			userInfo;
 
 		try {
 			let res = await auth.createUserWithEmailAndPassword(email, password);
@@ -51,7 +55,7 @@ export function AuthProvider({ children }) {
 			return { error: getCustomErrorMessage(err) };
 		}
 	}
-	
+
 	function logout() {
 		return auth.signOut();
 	}
@@ -66,37 +70,37 @@ export function AuthProvider({ children }) {
 	}
 
 	const customErrorMessages = {
-		"auth/email-not-verified": {
-		  "message": "Your email isn't verified",
-		  "type": "email",
-		  "scope": "global"
+		'auth/email-not-verified': {
+			message: "Your email isn't verified",
+			type: 'email',
+			scope: 'global',
 		},
-		"auth/user-not-found": {
-		  "message": "You have entered an invalid username or password",
-		  "type": "email",
-		  "scope": "global"
+		'auth/user-not-found': {
+			message: 'You have entered an invalid username or password',
+			type: 'email',
+			scope: 'global',
 		},
-		"auth/wrong-password": {
-		  "message": "You have entered an invalid username or password",
-		  "type": "email",
-		  "scope": "global"
+		'auth/wrong-password': {
+			message: 'You have entered an invalid username or password',
+			type: 'email',
+			scope: 'global',
 		},
-		"auth/too-many-requests": {
-		  "message": "Too many requests with this email. Please wait.",
-		  "type": "password",
-		  "scope": "global"
+		'auth/too-many-requests': {
+			message: 'Too many requests with this email. Please wait.',
+			type: 'password',
+			scope: 'global',
 		},
-		"auth/email-already-in-use": {
-		  "message": "Email already exists.",
-		  "type": "email",
-		  "scope": "global"
+		'auth/email-already-in-use': {
+			message: 'Email already exists.',
+			type: 'email',
+			scope: 'global',
 		},
-		"auth/invalid-email" : {
-			"message": "Your email is badly formatted",
-			"type": "email",
-			"scope": "local"
-		}
-	  }
+		'auth/invalid-email': {
+			message: 'Your email is badly formatted',
+			type: 'email',
+			scope: 'local',
+		},
+	};
 
 	function getCustomErrorMessage(error) {
 		// console.log("teste", error)
@@ -106,8 +110,13 @@ export function AuthProvider({ children }) {
 	}
 
 	useEffect(() => {
-		const unsubscribe = auth.onAuthStateChanged(user => {
-			setCurrentUser(user);
+		const unsubscribe = auth.onAuthStateChanged(async user => {
+			if (!user) {
+				setCurrentUser(null);
+			} else {
+				const userInfo = await queryUser(user.uid);
+				setCurrentUser(userInfo);
+			}
 			setLoading(false);
 		});
 
