@@ -1,0 +1,23 @@
+.banner_danger {
+    border: none;
+    font-family: inherit;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .banner_danger {
+    background: #ef5350;
+    color: #ffffff;
+  
+    &:hover {
+      background: #e93835;
+      cursor: pointer;
+    }
+  }
+  
+  .banner__content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  

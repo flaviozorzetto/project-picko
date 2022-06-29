@@ -1,5 +1,5 @@
 import './Button.scss';
-import loadIcon from '../IconLoader/icon-loader.js';
+import loadIcon from '../IconLoader/icon-loader';
 
 export default function Button(props) {
 	const svgProps = {
@@ -10,8 +10,10 @@ export default function Button(props) {
 
 	return (
 		<button
+			form={props.form}
+			type={props.type}
 			onClick={props.onClick}
-			className={`button_${props.type} button_${props.type}_${props.size}`}
+			className={`button_${props.theme} button_${props.theme}_${props.size}`}
 		>
 			{props.iconLeft || props.iconRight ? (
 				<div className="button__content">
