@@ -77,23 +77,12 @@ export default function Login() {
 							content="Continue"
 							theme="primary"
 							size="b"
+							full={true}
 							disabled={loading}
 						/>
 					</Form>
-					<Button
-						content={<Link to="/signup">No accounting? Sign up here</Link>}
-						theme="secondary"
-						size="s"
-						disabled={loading}
-					/>
-					{/* <Button content={No accounting? Sign up <Link to="/signup">here</Link>}type="secondary" size="s" disabled={loading} /> */}
-
-					<Button
-						content={<Link to="/forgot-password">Forgot your password?</Link>}
-						theme="secondary"
-						size="s"
-						disabled={loading}
-					/>
+					<span>No accounting? Sign up <Link to="/signup">here</Link></span>
+					<span><Link to="/forgot-password">Forgot your password?</Link></span>
 				</div>
 			</div>
 		</>

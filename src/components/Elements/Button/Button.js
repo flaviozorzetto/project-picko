@@ -13,7 +13,7 @@ export default function Button(props) {
 			form={props.form}
 			type={props.type}
 			onClick={props.onClick}
-			className={`button_${props.theme} button_${props.theme}_${props.size}`}
+			className={`button_${props.theme} button_${props.theme}_${props.size}${props.full ? " button_full" : ""}`}
 		>
 			{props.iconLeft || props.iconRight ? (
 				<div className="button__content">

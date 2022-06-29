@@ -14,7 +14,7 @@ export default function Banner(props) {
     >
       {props.iconLeft || props.iconRight ? (
         <div className="banner__content">
-          {props.iconLeft && loadIcon(props.iconLeft, svgProps)}
+          {props.iconLeft && loadIcon(props.iconLeft, {width: 24, height: 24})}
           <span>{props.content}</span>
           {props.iconRight && loadIcon(props.iconRight, svgProps)}
         </div>

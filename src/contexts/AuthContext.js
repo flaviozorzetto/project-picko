@@ -12,7 +12,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-	const [currentUser, setCurrentUser] = useState();
+	const [currentUser, setCurrentUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 
 	async function signup(signupObj) {
@@ -48,7 +48,9 @@ export function AuthProvider({ children }) {
 		try {
 			let res = await auth.signInWithEmailAndPassword(email, password);
 			if (!res.user.emailVerified) {
-				throw new Error('auth/email-not-verified');
+				let error = new Error("The email is not verified");
+				error.code = 'auth/email-not-verified';
+				throw error;
 			}
 			return res;
 		} catch (err) {
@@ -76,12 +78,12 @@ export function AuthProvider({ children }) {
 			scope: 'global',
 		},
 		'auth/user-not-found': {
-			message: 'You have entered an invalid username or password',
+			message: 'Incorrect email or password',
 			type: 'email',
 			scope: 'global',
 		},
 		'auth/wrong-password': {
-			message: 'You have entered an invalid username or password',
+			message: 'Incorrect email or password',
 			type: 'email',
 			scope: 'global',
 		},
@@ -103,14 +105,13 @@ export function AuthProvider({ children }) {
 	};
 
 	function getCustomErrorMessage(error) {
-		// console.log("teste", error)
 		let errorMsg = customErrorMessages[error.code];
-
 		return errorMsg ? errorMsg : 'Failed to authenticate';
 	}
 
 	useEffect(() => {
-		const unsubscribe = auth.onAuthStateChanged(async user => {
+		auth.onAuthStateChanged(async user => {
+			setLoading(true);
 			if (!user) {
 				setCurrentUser(null);
 			} else {
@@ -119,8 +120,6 @@ export function AuthProvider({ children }) {
 			}
 			setLoading(false);
 		});
-
-		return unsubscribe;
 	}, []);
 
 	const value = {

@@ -19,7 +19,7 @@ export default function Form(props) {
     <form noValidate id={props.id} className="form" method={props.method} target={props.target} action={props.action} onSubmit={props.onSubmit}>
       {/* errorMessageDisplay &&  */}
       {props.error && props.error.scope == "global" &&
-        <Banner iconLeft="search" theme="danger" content={props.error.message} />
+        <Banner iconLeft="alert-circle" theme="danger" content={props.error.message} />
       }
 
       {props.children}
