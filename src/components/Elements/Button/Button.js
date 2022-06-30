@@ -16,6 +16,7 @@ export default function Button(props) {
 			className={`button_${props.theme} button_${props.theme}_${props.size}${
 				props.full ? ' button_full' : ''
 			}`}
+			disabled={props.disabled ? props.disabled : null}
 		>
 			{props.iconLeft || props.iconRight ? (
 				<div className="button__content">

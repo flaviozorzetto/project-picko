@@ -83,6 +83,20 @@
 	}
 }
 
+.button_secondary {
+	&:disabled {
+		border: none;
+	}
+}
+
+.button_tertiary {
+	&:disabled {
+		background: #ffffff;
+		color: #838895;
+		text-decoration: none;
+	}
+}
+
 .button__content {
 	display: flex;
 	align-items: center;

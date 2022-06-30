@@ -192,6 +192,24 @@ export default function Dashboard() {
 						size="b"
 						theme="primary"
 						onClick={handleLogout}
+						disabled={true}
+					/>
+					<Button content="Logout" size="b" theme="secondary" disabled={true} />
+					<Button
+						content="Logout"
+						size="b"
+						theme="tertiary"
+						iconLeft="plus"
+						iconRight="plus"
+						disabled={true}
+					/>
+					<Button
+						content="Logout"
+						size="b"
+						theme="danger"
+						iconLeft="plus"
+						iconRight="plus"
+						disabled={true}
 					/>
 				</section>
 				{interviewModalOpen && (
