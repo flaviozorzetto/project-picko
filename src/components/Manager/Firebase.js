@@ -50,7 +50,7 @@ async function queryUser(uid) {
 	const docSnap = await getDoc(docRef);
 
 	if (docSnap.exists()) {
-		return docSnap.data();
+		return { docRef, data: docSnap.data() };
 	} else {
 		return 'No data found!';
 	}

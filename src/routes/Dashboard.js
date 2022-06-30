@@ -21,7 +21,7 @@ import '../styles/index.scss';
 export default function Dashboard() {
 	const [authError, setAuthError] = useState('');
 	const { currentUser, logout } = useAuth();
-	console.log(currentUser);
+	const userInfo = currentUser.data;
 	const navigate = useNavigate();
 
 	async function handleLogout() {
@@ -115,8 +115,7 @@ export default function Dashboard() {
 						setValue={setNavIndex}
 					/>
 					<span>
-						Hi,{' '}
-						<span className="capitalize-first">{currentUser.firstName}</span>
+						Hi, <span className="capitalize-first">{userInfo.firstName}</span>
 					</span>
 				</NavBar>
 			</header>

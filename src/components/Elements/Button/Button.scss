@@ -1,6 +1,7 @@
 .button_primary,
 .button_secondary,
-.button_danger {
+.button_danger,
+.button_tertiary {
 	border: none;
 	font-family: inherit;
 	border-radius: 0.5rem;
@@ -17,7 +18,7 @@
 	}
 
 	&_b {
-		padding: 1rem 2rem;
+		padding: 1rem 1.5rem;
 		font-size: 1rem;
 		font-weight: 500;
 	}
@@ -43,8 +44,22 @@
 	background: #ffffff;
 	color: #006446;
 
+	border: 1px solid #0e4536;
+
 	&:hover {
-		background: #f4f4f6;
+		background: #f5fffc;
+		cursor: pointer;
+	}
+}
+
+.button_tertiary {
+	background: #ffffff;
+	color: #006446;
+
+	text-decoration: underline;
+
+	&:hover {
+		background: #f1f2f3;
 		cursor: pointer;
 	}
 }

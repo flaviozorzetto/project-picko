@@ -3,9 +3,9 @@ import loadIcon from '../IconLoader/icon-loader';
 
 export default function Button(props) {
 	const svgProps = {
-		width: props.size === 'm' ? 24 : 16,
-		height: props.size === 'm' ? 24 : 16,
-		'stroke-width': 1.5,
+		width: props.size === 'm' || props.size === 'b' ? 24 : 16,
+		height: props.size === 'm' || props.size === 'b' ? 24 : 16,
+		'stroke-width': 1.3,
 	};
 
 	return (
@@ -13,7 +13,9 @@ export default function Button(props) {
 			form={props.form}
 			type={props.type}
 			onClick={props.onClick}
-			className={`button_${props.theme} button_${props.theme}_${props.size}${props.full ? " button_full" : ""}`}
+			className={`button_${props.theme} button_${props.theme}_${props.size}${
+				props.full ? ' button_full' : ''
+			}`}
 		>
 			{props.iconLeft || props.iconRight ? (
 				<div className="button__content">
