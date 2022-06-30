@@ -40,7 +40,7 @@ export default function Login() {
 			let customError = res.error;
 			setError(customError);
 		} else {
-			navigate('/');
+			navigate('/dashboard');
 		}
 		setLoading(false);
 	}
@@ -48,8 +48,8 @@ export default function Login() {
 	return (
 		<>
 			<div className="login-page">
-				<div className="container">
-					<img src={logo} className="logo" />
+				<div className="login-container">
+					<img src={logo} className="logo" alt="logo"/>
 
 					<Form onSubmit={handleSubmit} error={error}>
 						<TextArea
@@ -81,8 +81,12 @@ export default function Login() {
 							disabled={loading}
 						/>
 					</Form>
-					<span>No accounting? Sign up <Link to="/signup">here</Link></span>
-					<span><Link to="/forgot-password">Forgot your password?</Link></span>
+					<span>
+						No accounting? Sign up <Link to="/signup">here</Link>
+					</span>
+					<span>
+						<Link to="/forgot-password">Forgot your password?</Link>
+					</span>
 				</div>
 			</div>
 		</>
