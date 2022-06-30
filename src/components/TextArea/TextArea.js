@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import loadIcon from "../Elements/IconLoader/icon-loader";
 import { Link, useNavigate } from "react-router-dom";
-import Banner from "../../components/Banner/Banner.js";
+import { useValidation } from "../../contexts/ValidationContext.js";
 import "./TextArea.scss";
 
 export default function TextArea(props) {
@@ -15,7 +15,20 @@ export default function TextArea(props) {
     }
   }, [props.error]);
 
+  const {inputs, addInput} = useValidation();
+  addInput(props.name, props.value, props.type)
+
+  
   const handleInput = (event) => {
+    addInput(props.name, event.target.value, event.target.type)
+    // inputObject[props.name].value = event.target.value
+
+    // if(inputObject[event.target.name].error) {
+    //   console.log("validation error: ", inputObject[event.target.name].error)
+    // }
+
+    console.log(props.name, inputs[props.name].value)
+
     if (props.error && props.error.scope == "local") {
       setErrorMessageDisplay(false);
     }
