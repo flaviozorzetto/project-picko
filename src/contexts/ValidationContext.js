@@ -7,36 +7,44 @@ export const useValidation = () => {
 };
 
 export const ValidationProvider = ({ children }) => {
-  let [inputs, setInputs] = useState({})
+  const [inputs, setInputs] = useState({})
 
   const addInput = (name, value, type) => {
-    setInputs((prev) => {
-      inputs[name] = {
+    setInputs((prev) => ({
+      ...prev,
+      [name]: {
         "value": value,
-        "type": type
+        "type": type,
       }
-      return inputs
-    })
+    }))
   }
 
   const validate = (e) => {
+    // console.log(inputs)
     e.preventDefault();
 
     for(let i in inputs) {
+      setInputs((prev) => ({
+        [i]: {
+          ...prev[i],
+          "error": inputs[i].value
+        }
+      }))
 
-    // console.log(i, inputs[i].value)
       if(inputs[i].type == "password") {
         
-        if(!inputs[i].value /* || .test(//g) */) {
-          return "Password must have at least 6 characters"
-        }
-
       } else if(inputs[i].type == "email") {
-
+        
       }
     }
+    
   }
 
+useEffect(() => {
+  console.log("sass", inputs)
+}, [inputs])
+
+  
   return (
     <ValidationContext.Provider value={{inputs, addInput, validate}}>
       {children}

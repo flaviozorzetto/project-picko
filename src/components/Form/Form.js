@@ -6,13 +6,11 @@ import { useValidation } from "../../contexts/ValidationContext.js";
 export default function Form(props) {
   const { inputs, validate } = useValidation();
 
-  let count = 0
-  for(let i in inputs) {
-    
-
-    console.log(count, inputs[i].value)
-    count++
-  }
+  // let count = 0
+  // for(let i in inputs) {
+  //   console.log(count, inputs[i].value)
+  //   count++
+  // }
   
   const validateAndSubmit = (event) => {
     validate(event)
@@ -24,19 +22,6 @@ export default function Form(props) {
 
     props.onSubmit(event)
   }
-
-  const [errorMessageDisplay, setErrorMessageDisplay] = useState("")
-
-  // useEffect(() => {
-  //   if(props.error) {
-  //     setErrorMessageDisplay(true)
-  //   }
-  // }, [props.error])
-
-  // const handleChange = (e) => {
-  //   setErrorMessageDisplay(false)
-  // }
-  
 
   return (
     <form noValidate id={props.id} className="form" method={props.method} target={props.target} action={props.action} onSubmit={validateAndSubmit}>
