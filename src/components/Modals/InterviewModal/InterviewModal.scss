@@ -1,53 +1,48 @@
-.modal__interview {
-	.modal {
-		&__background {
-			background-color: #26272c;
-			opacity: 0.4;
-			content: '';
-			position: absolute;
-			top: 0;
-			right: 0;
-			left: 0;
-			bottom: 0;
+.modal {
+	font: inherit;
+	&__interview {
+		position: absolute;
+		height: 100vh;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		z-index: 1;
+		background-color: #ffffff;
+		--header-comp-padding: 1.5rem 1.5rem;
+	}
+	&__icon {
+		color: #5e626e;
+		&:hover {
+			cursor: pointer;
+			transform: scale(1.1);
 		}
-		&__content {
-			position: absolute;
-			max-width: 600px;
-			left: 50%;
-			top: 30%;
-			transform: translate(-50%);
-			background-color: #ffffff;
-			padding: 2rem;
-			border-radius: 0.5rem;
-			color: #5e626e;
-			&__header {
-				display: flex;
-				flex-flow: wrap;
-				justify-content: space-between;
-				align-items: center;
-			}
-			&__footer {
-				display: flex;
-				justify-content: flex-end;
-				gap: 1rem;
-			}
+	}
+	&__main {
+		padding-top: 4rem;
+		padding-left: 150px;
+	}
+
+	&__info {
+		max-width: 536px;
+		&__step {
+			color: #838895;
+			font-weight: 500;
+			font-size: 0.9rem;
 		}
 		&__title {
+			margin-top: 1rem;
 			color: #26272c;
-			font-size: 1rem;
 			font-weight: 500;
+			font-size: 1rem;
 		}
-		&__description {
+		&__paragraph {
+			margin-top: 0.8rem;
+			margin-bottom: 3rem;
+			color: #5e626e;
 			font-weight: 400;
+			font-size: 1rem;
 			line-height: 1.5rem;
-			max-width: 500px;
-			margin-top: 0.75rem;
-		}
-		&__close {
-			color: inherit;
-			cursor: pointer;
-			padding: 0;
-			margin: 0;
 		}
 	}
 }

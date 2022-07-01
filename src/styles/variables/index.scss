@@ -1,6 +1,9 @@
 @import 'reset';
 @import 'colors';
+@import 'fonts';
 
 :root {
-   --tab-padding: 1rem;
+	--tab-padding: 1rem;
+	--header-comp-padding: 1.5rem 0;
+	--footer-comp-gap: 0 1rem;
 }

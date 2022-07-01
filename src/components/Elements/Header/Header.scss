@@ -2,7 +2,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 1.5rem 0;
+	padding: var(--header-comp-padding);
 	border-bottom: 1px solid #e3e5e8;
 
 	&__title {
