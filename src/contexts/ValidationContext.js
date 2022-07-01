@@ -19,20 +19,69 @@ export const ValidationProvider = ({ children }) => {
     }))
   }
 
+  const customErrorMessages = {
+    'input/local-error': (inputName, error) => {
+      setInputs((prev) => ({
+        [inputName]: {
+          ...prev[inputName],
+          "error": error 
+        }
+      }))
+    },
+
+		'auth/email-not-verified': () => {
+      return {
+        message: "Your email isn't verified",
+        type: 'email',
+        scope: 'global',
+      }
+    },
+		'auth/user-not-found': () => {
+      return {
+        message: 'Incorrect email or password',
+        type: 'email',
+        scope: 'global',
+		  }
+    },
+		'auth/wrong-password': () => {
+      return {
+        message: 'Incorrect email or password',
+        type: 'email',
+        scope: 'global',
+		  }
+    },
+		'auth/too-many-requests': () => {
+      return {
+        message: 'Too many requests with this email. Please wait.',
+        type: 'password',
+        scope: 'global',
+		  }
+    },
+		'auth/email-already-in-use': () => {
+      return {
+        message: 'Email already exists.',
+        type: 'email',
+        scope: 'global',
+		  }
+    },
+		'auth/invalid-email': () => {
+      return {
+        message: 'Your email is badly formatted',
+        type: 'email',
+        scope: 'local',
+		  }
+    },
+	};
+
   const validate = (e) => {
     // console.log(inputs)
     e.preventDefault();
 
     for(let i in inputs) {
-      setInputs((prev) => ({
-        [i]: {
-          ...prev[i],
-          "error": inputs[i].value
-        }
-      }))
-
       if(inputs[i].type == "password") {
-        
+        if(inputs[i].value.length < 6) {
+          customErrorMessages["input/local-error"](i, "The password must have at least 6 characters")
+        }
       } else if(inputs[i].type == "email") {
         
       }
