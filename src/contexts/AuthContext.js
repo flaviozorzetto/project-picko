@@ -1,103 +1,103 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { auth } from '../firebase.js';
+import React, { useContext, useState, useEffect } from "react";
+import { auth } from "../firebase.js";
 import { useValidation } from "./ValidationContext.js";
 import {
-	createUserDocument,
-	queryUser,
-} from '../components/Manager/Firebase.js';
+  createUserDocument,
+  queryUser,
+} from "../components/Manager/Firebase.js";
 
 const AuthContext = React.createContext();
 
 export function useAuth() {
-	return useContext(AuthContext);
+  return useContext(AuthContext);
 }
 
 export function AuthProvider({ children }) {
-	const { validate } = useValidation();
-	
-	const [currentUser, setCurrentUser] = useState(null);
-	const [loading, setLoading] = useState(true);
+  const { validation } = useValidation();
 
-	async function signup(signupObj) {
-		const userInfo = {
-			firstName: signupObj['first-name'].value,
-			lastName: signupObj['last-name'].value,
-			email: signupObj['email'].value,
-			password: signupObj['password'].value,
-			companyName: signupObj['company-name'].value,
-			jobRole: signupObj['job-role'].value,
-		};
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-		const { firstName, lastName, email, password, companyName, jobRole } =
-			userInfo;
+  async function signup(signupObj) {
+    const userInfo = {
+      firstName: signupObj["first-name"].value,
+      lastName: signupObj["last-name"].value,
+      email: signupObj["email"].value,
+      password: signupObj["password"].value,
+      companyName: signupObj["company-name"].value,
+      jobRole: signupObj["job-role"].value,
+    };
 
-		try {
-			let res = await auth.createUserWithEmailAndPassword(email, password);
-			const uid = res.user.uid;
-			await res.user.sendEmailVerification();
+    const { firstName, lastName, email, password, companyName, jobRole } =
+      userInfo;
 
-			await createUserDocument({
-				uid,
-				...userInfo,
-			});
+    try {
+      let res = await auth.createUserWithEmailAndPassword(email, password);
+      const uid = res.user.uid;
+      await res.user.sendEmailVerification();
 
-			return res;
-		} catch (err) {
-			return { error: validate(err.code) };
-		}
-	}
+      await createUserDocument({
+        uid,
+        ...userInfo,
+      });
 
-	async function login(email, password) {
-		try {
-			let res = await auth.signInWithEmailAndPassword(email, password);
-			if (!res.user.emailVerified) {
-				let error = new Error("The email is not verified");
-				error.code = 'auth/email-not-verified';
-				throw error;
-			}
-			return res;
-		} catch (err) {
-			return { error: validate(err.code) };
-		}
-	}
+      return res;
+    } catch (err) {
+      return { error: validation(err.code) };
+    }
+  }
 
-	function logout() {
-		return auth.signOut();
-	}
+  async function login(email, password) {
+    try {
+      let res = await auth.signInWithEmailAndPassword(email, password);
+      if (!res.user.emailVerified) {
+        let error = new Error("The email is not verified");
+        error.code = "auth/email-not-verified";
+        throw error;
+      }
+      return res;
+    } catch (err) {
+      return { error: validation(err.code) };
+    }
+  }
 
-	async function resetPassword(email) {
-		try {
-			let res = await auth.sendPasswordResetEmail(email);
-			return res;
-		} catch (err) {
-			return { error: validate(err.code) };
-		}
-	}
+  function logout() {
+    return auth.signOut();
+  }
 
-	useEffect(() => {
-		auth.onAuthStateChanged(async user => {
-			setLoading(true);
-			if (!user) {
-				setCurrentUser(null);
-			} else {
-				const userInfo = await queryUser(user.uid);
-				setCurrentUser(userInfo);
-			}
-			setLoading(false);
-		});
-	}, []);
+  async function resetPassword(email) {
+    try {
+      let res = await auth.sendPasswordResetEmail(email);
+      return res;
+    } catch (err) {
+      return { error: validation(err.code) };
+    }
+  }
 
-	const value = {
-		currentUser,
-		login,
-		logout,
-		signup,
-		resetPassword,
-	};
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      setLoading(true);
+      if (!user) {
+        setCurrentUser(null);
+      } else {
+        const userInfo = await queryUser(user.uid);
+        setCurrentUser(userInfo);
+      }
+      setLoading(false);
+    });
+  }, []);
 
-	return (
-		<AuthContext.Provider value={value}>
-			{!loading && children}
-		</AuthContext.Provider>
-	);
+  const value = {
+    currentUser,
+    login,
+    logout,
+    signup,
+    resetPassword,
+  };
+
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 }
