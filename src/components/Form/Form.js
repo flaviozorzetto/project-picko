@@ -6,19 +6,9 @@ import { useValidation } from "../../contexts/ValidationContext.js";
 export default function Form(props) {
   const { inputs, validate } = useValidation();
 
-  // let count = 0
-  // for(let i in inputs) {
-  //   console.log(count, inputs[i].value)
-  //   count++
-  // }
-  
   const validateAndSubmit = (event) => {
-    validate(event)
-
-    // console.log("Form.js", inputs)
-    // console.log("Form.js", inputs["email"].value)
-    
-    // console.log(props.children)
+    event.preventDefault()
+    if(!validate()) return;
 
     props.onSubmit(event)
   }

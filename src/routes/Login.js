@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext.js';
+import { useValidation } from '../contexts/ValidationContext.js';
 import { Link, useNavigate } from 'react-router-dom';
 import Form from '../components/Form/Form.js';
 import TextArea from '../components/TextArea/TextArea.js';
@@ -8,6 +9,8 @@ import './Login.scss';
 import logo from '../assets/svgs/logo.svg';
 
 export default function Login() {
+	const { validate } = useValidation();
+
 	const [state, setStates] = useState({
 		email: { value: '' },
 		password: { value: '' },
@@ -31,12 +34,11 @@ export default function Login() {
 	async function handleSubmit(e) {
 		e.preventDefault();
 		setError('');
-
 		setLoading(true);
+
 		const res = await login(state.email.value, state.password.value);
 
-		if (res && res.error) {
-			console.log(res.error);
+		if ((res && res.error)) {
 			let customError = res.error;
 			setError(customError);
 		} else {

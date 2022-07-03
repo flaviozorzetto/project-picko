@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
 import loadIcon from "../Elements/IconLoader/icon-loader";
-import { Link, useNavigate } from "react-router-dom";
 import { useValidation } from "../../contexts/ValidationContext.js";
 import "./TextArea.scss";
 
 export default function TextArea(props) {
+  const [inputError, setInputError] = useState("");
+
   const [errorMessageDisplay, setErrorMessageDisplay] = useState(
-    props.error == true
+    inputError == true
   );
+
 
   useEffect(() => {
     if (props.error) {
       setErrorMessageDisplay(true);
+      setInputError(props.error);
     }
   }, [props.error]);
 
@@ -19,18 +22,23 @@ export default function TextArea(props) {
 
   const handleInput = (event) => {
     addInput(props.name, event.target.value, event.target.type)
-    // console.log("teste", inputs[props.name])
-    
-    // inputObject[props.name].value = event.target.value
 
-    // if(inputObject[event.target.name].error) {
-    //   console.log("validation error: ", inputObject[event.target.name].error)
-    // }
-
-    if (props.error && props.error.scope == "local") {
+    if (inputError && inputError.scope == "local") {
       setErrorMessageDisplay(false);
     }
   };
+
+  useEffect(() => {
+    if(inputs[props.name] && inputs[props.name].error) {
+      console.log("sass", inputs[props.name])
+      setInputError(inputs[props.name].error)
+      setErrorMessageDisplay(true);
+    }
+  }, [inputs[props.name]])
+
+  useEffect(() => {
+    addInput(props.name, "", props.type)
+  }, [props.value])
 
   return (
     <>
@@ -45,10 +53,10 @@ export default function TextArea(props) {
             onChange={props.onChange}
             className={`text_input${
               errorMessageDisplay &&
-              props.error &&
-              ((props.error.scope == "local" &&
-                props.error.type == props.name) ||
-                props.error.scope == "global")
+              inputError &&
+              ((inputError.scope == "local" &&
+                inputError.type == props.name) ||
+                inputError.scope == "global")
                 ? " text_input_error"
                 : ""
             }${props.iconLeft ? " pl-50" : ""}${
@@ -72,11 +80,11 @@ export default function TextArea(props) {
       </div>
 
       {errorMessageDisplay &&
-        props.error &&
-        props.error.scope == "local" &&
-        props.error.type == props.name && (
+        inputError &&
+        inputError.scope == "local" &&
+        inputError.type == props.name && (
           <div className="error_message-container">
-            <span className="error_message">{props.error.message}</span>
+            <span className="error_message">{inputError.error}</span>
           </div>
         )}
     </>

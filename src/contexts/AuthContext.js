@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
+import { useValidation } from "./ValidationContext.js";
 import {
 	createUserDocument,
 	queryUser,
 } from '../components/Manager/Firebase.js';
-import { useValidation } from "./ValidationContext.js";
 
 const AuthContext = React.createContext();
 
@@ -13,6 +13,8 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
+	const { validate } = useValidation();
+	
 	const [currentUser, setCurrentUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 
@@ -41,7 +43,7 @@ export function AuthProvider({ children }) {
 
 			return res;
 		} catch (err) {
-			return { error: getCustomErrorMessage(err) };
+			return { error: validate(err.code) };
 		}
 	}
 
@@ -55,7 +57,7 @@ export function AuthProvider({ children }) {
 			}
 			return res;
 		} catch (err) {
-			return { error: getCustomErrorMessage(err) };
+			return { error: validate(err.code) };
 		}
 	}
 
@@ -68,46 +70,8 @@ export function AuthProvider({ children }) {
 			let res = await auth.sendPasswordResetEmail(email);
 			return res;
 		} catch (err) {
-			return { error: getCustomErrorMessage(err) };
+			return { error: validate(err.code) };
 		}
-	}
-
-	const customErrorMessages = {
-		'auth/email-not-verified': {
-			message: "Your email isn't verified",
-			type: 'email',
-			scope: 'global',
-		},
-		'auth/user-not-found': {
-			message: 'Incorrect email or password',
-			type: 'email',
-			scope: 'global',
-		},
-		'auth/wrong-password': {
-			message: 'Incorrect email or password',
-			type: 'email',
-			scope: 'global',
-		},
-		'auth/too-many-requests': {
-			message: 'Too many requests with this email. Please wait.',
-			type: 'password',
-			scope: 'global',
-		},
-		'auth/email-already-in-use': {
-			message: 'Email already exists.',
-			type: 'email',
-			scope: 'global',
-		},
-		'auth/invalid-email': {
-			message: 'Your email is badly formatted',
-			type: 'email',
-			scope: 'local',
-		},
-	};
-
-	function getCustomErrorMessage(error) {
-		let errorMsg = customErrorMessages[error.code];
-		return errorMsg ? errorMsg : 'Failed to authenticate';
 	}
 
 	useEffect(() => {
@@ -129,7 +93,6 @@ export function AuthProvider({ children }) {
 		logout,
 		signup,
 		resetPassword,
-		getCustomErrorMessage,
 	};
 
 	return (
