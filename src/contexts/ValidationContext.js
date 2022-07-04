@@ -27,16 +27,15 @@ export const ValidationProvider = ({ children }) => {
     for(let name of currentInputs) {
       if(inputs[name]) {
         inputsToRemove.push(name);
-        console.log("inputs name", inputs[name])
         delete inputs[name];
       }
     }
     return inputsToRemove
-    // inputs["email"].value = ""
   }
 
   const customErrorMessages = {
     'input/local-error': (inputName, error) => {
+      console.log(inputName, error)
       setInputs((prev) => ({
         ...prev,
         [inputName]: {
@@ -75,11 +74,6 @@ export const ValidationProvider = ({ children }) => {
         type: 'email',
         scope: 'global',
     },
-		'auth/invalid-email': {
-        message: 'Your email is badly formatted',
-        type: 'email',
-        scope: 'local',
-    },
 	};
 
   const validation = (errorCode) => {
@@ -110,12 +104,13 @@ export const ValidationProvider = ({ children }) => {
       if(inputs[name].value.length == 0) {
         customErrorMessages["input/local-error"](name, `The ${inputs[name].type} field cannot be empty`)
       }
+      console.log("input value", inputs[name].value)
     }
     return isValidated;
   }
 
   return (
-    <ValidationContext.Provider value={{inputs, addInput, removeInput, currentInputs, setCurrentInputs, validation}}>
+    <ValidationContext.Provider value={{inputs, setInputs, addInput, removeInput, currentInputs, setCurrentInputs, validation}}>
       {children}
     </ValidationContext.Provider>
   );

@@ -24,7 +24,9 @@ export default function TextArea(props) {
     if (!inputs[props.name]) {
       addInput(props.name, "", props.type);
     }
+    // setCurrentInputs([]);
     setCurrentInputs((prev) => [...new Set([...prev, props.name])]);
+    console.log("TROCOU DE FORM", props.parent)
   }, [props.name]); // rever se o local a se observar é o props.name
 
   const handleInput = (event) => {

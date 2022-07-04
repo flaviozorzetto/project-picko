@@ -11,7 +11,8 @@ import "./Signup.scss";
 import logo from "../assets/svgs/logo.svg";
 
 export default function Signup() {
-  const { validation, setInputs, setCurrentInputs, removeInput, inputs } = useValidation();
+  const { validation, setInputs, setCurrentInputs, removeInput, inputs } =
+    useValidation();
   const [step, setStep] = useState(1);
 
   const [state, setStates] = useState({
@@ -38,9 +39,33 @@ export default function Signup() {
   const { signup } = useAuth();
   const [loading, setLoading] = useState(false);
 
+  const inputReset = (inputNameList) => {
+    inputNameList.forEach((i) => {
+      // will set the value displayed for the user to ""
+      setStates((prev) => ({
+        ...prev,
+        [i]: { value: "" },
+      }));
+
+      /* this if exists to avoid the possibility of inputList have step 2 inputs. 
+      Using the state object as parameter would cause a error because the inputs 
+      object only loads the current inputs) */
+      if (inputs[i]) { 
+        // will set the input value to ""
+        setInputs((prev) => ({
+          ...prev,
+          [i]: {
+            ...prev[i],
+            value: "",
+          },
+        }));
+      }
+    });
+  }
+
   const handleSubmit = async (e) => {
     setStep(step + 1);
-	setCurrentInputs([])
+    setCurrentInputs([]);
 
     e.preventDefault();
     setLoading(true);
@@ -50,11 +75,11 @@ export default function Signup() {
       let customError = res.error;
       setError(customError);
     }
+
+    // removeInput() // will delete step 2 inputs, avoiding validation errors for when the form is reloaded
+    // inputReset(Object.keys(state));
     setLoading(false);
-
-
   };
-
 
   return (
     <>
@@ -68,33 +93,17 @@ export default function Signup() {
           ) : (
             <>
               <img src={logo} className="logo" />
-              <Form id="signup-form" onSubmit={handleSubmit} error={error}>
+              <Form id="signup-form" onSubmit={handleSubmit} error={error} reset={inputReset} state={state}>
                 {step == 1 ? (
                   <>
-					<Button
+                    <Button
                       content="REMOVE INPUTS"
                       type="button"
                       theme="primary"
                       onClick={() => {
-						console.log("removido pelo button")
-						setCurrentInputs([]);
-
-						let stateName = "email"
-						setStates({
-							...state,
-							[stateName]: { value: "" }
-						});
-
-						// for(let i in state) {
-						// 	setStates({
-						// 		...state,
-						// 		[i]: { value: "" }
-						// 	})
-						// }
-						// console.log("STATES CLEANED?", state)
-
-						console.log("teste 2", state["email"])
-					  }}
+                        setCurrentInputs([]);
+                        inputReset(Object.keys(state));
+                      }}
                       size="s"
                       disabled={loading}
                     />
@@ -103,11 +112,13 @@ export default function Signup() {
                       onChange={handleChange}
                       value={state["first-name"].value}
                       required={true}
-                      id="1"
+                      parent="signup-form"
                       type="text"
                       name="first-name"
                       disabled={false}
-					  error={inputs["first-name"] ? inputs["first-name"].message : ""}
+                      error={
+                        inputs["first-name"] ? inputs["first-name"].message : ""
+                      }
                     >
                       Name
                     </TextArea>
@@ -115,10 +126,13 @@ export default function Signup() {
                       onChange={handleChange}
                       value={state["last-name"].value}
                       required={true}
+                      parent="signup-form"
                       type="text"
                       name="last-name"
                       disabled={false}
-					  error={inputs["last-name"] ? inputs["last-name"].message : ""}
+                      error={
+                        inputs["last-name"] ? inputs["last-name"].message : ""
+                      }
                     >
                       Last name
                     </TextArea>
@@ -127,6 +141,7 @@ export default function Signup() {
                       onChange={handleChange}
                       value={state["email"].value}
                       required={true}
+                      parent="signup-form"
                       type="email"
                       name="email"
                       disabled={false}
@@ -139,10 +154,13 @@ export default function Signup() {
                       onChange={handleChange}
                       value={state["password"].value}
                       required={true}
+                      parent="signup-form"
                       type="password"
                       name="password"
                       disabled={false}
-                      error={inputs["password"] ? inputs["password"].message : error}
+                      error={
+                        inputs["password"] ? inputs["password"].message : error
+                      }
                     >
                       Password
                     </TextArea>
@@ -150,10 +168,15 @@ export default function Signup() {
                       onChange={handleChange}
                       value={state["password-confirmation"].value}
                       required={true}
+                      parent="signup-form"
                       type="password"
                       name="password-confirmation"
                       disabled={false}
-					  error={inputs["password-confirmation"] ? inputs["password-confirmation"].message : ""}
+                      error={
+                        inputs["password-confirmation"]
+                          ? inputs["password-confirmation"].message
+                          : ""
+                      }
                     >
                       Repeat password
                     </TextArea>
@@ -162,26 +185,31 @@ export default function Signup() {
                       type="button"
                       theme="primary"
                       onClick={() => {
-						  if(validation()) {
-							setStep(step + 1)
-							setCurrentInputs([])
-						  }
-					  }}
+                        if (validation()) {
+                          setStep(step + 1);
+                          setCurrentInputs([]);
+                        }
+                      }}
                       size="s"
                       disabled={loading}
                     />
                   </>
                 ) : (
-					<>
+                  <>
                     <TextArea
                       onChange={handleChange}
                       value={state["company-name"].value}
                       required={true}
+                      parent="signup-form"
                       id="2"
                       type="text"
                       name="company-name"
                       disabled={false}
-					  error={inputs["company-name"] ? inputs["company-name"].message : ""}
+                      error={
+                        inputs["company-name"]
+                          ? inputs["company-name"].message
+                          : ""
+                      }
                     >
                       Company name
                     </TextArea>
@@ -189,10 +217,13 @@ export default function Signup() {
                       onChange={handleChange}
                       value={state["job-role"].value}
                       required={true}
+                      parent="signup-form"
                       type="text"
                       name="job-role"
                       disabled={false}
-					  error={inputs["job-role"] ? inputs["job-role"].message : ""}
+                      error={
+                        inputs["job-role"] ? inputs["job-role"].message : ""
+                      }
                     >
                       Job role
                     </TextArea>
@@ -200,6 +231,7 @@ export default function Signup() {
                       onChange={handleChange}
                       value={state["employee-quantity"].value}
                       required={true}
+                      parent="signup-form"
                       type="checkbox"
                       name="employee-quantity"
                       disabled={false}
@@ -221,22 +253,21 @@ export default function Signup() {
                       type="button"
                       theme="primary"
                       onClick={() => {
-						setStep(step - 1);
-						setCurrentInputs([]);
-						let inputsToRemove = removeInput();
+                        setStep(step - 1);
+                        setCurrentInputs([]);
 
-						inputsToRemove.forEach((input) => {
-							setStates((prev) => ({
-								...prev,
-								[input]: { value: "" }
-							}))
-						})
-					  }}
+                        /* if inputs object have an input that is not rendered for the user, 
+                        that function will delete it and return all the input names that needs to
+                        get their states cleaned to "" to avoid validation errors on inputs that the
+                        user does not have control over it*/
+                        let inputsToRemove = removeInput();
+                        inputReset(inputsToRemove);
+
+                      }}
                       size="s"
                       disabled={loading}
                     />
                   </>
-				  
                 )}
               </Form>
             </>

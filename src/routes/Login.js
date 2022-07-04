@@ -9,12 +9,36 @@ import "./Login.scss";
 import logo from "../assets/svgs/logo.svg";
 
 export default function Login() {
-  const { inputs } = useValidation();
+  const { inputs, setInputs } = useValidation();
 
   const [state, setStates] = useState({
     email: { value: "" },
     password: { value: "" },
   });
+
+  const inputReset = (inputNameList) => {
+    inputNameList.forEach((i) => {
+      // will set the value displayed for the user to ""
+      setStates((prev) => ({
+        ...prev,
+        [i]: { value: "" },
+      }));
+
+      /* this if exists to avoid the possibility of inputList have step 2 inputs. 
+      Using the state object as parameter would cause a error because the inputs 
+      object only loads the current inputs) */
+      if (inputs[i]) { 
+        // will set the input value to ""
+        setInputs((prev) => ({
+          ...prev,
+          [i]: {
+            ...prev[i],
+            value: "",
+          },
+        }));
+      }
+    });
+  }
 
   const [error, setError] = useState("");
   const { login } = useAuth();
@@ -52,10 +76,11 @@ export default function Login() {
         <div className="login-container">
           <img src={logo} className="logo" alt="logo" />
 
-          <Form onSubmit={handleSubmit} error={error}>
+          <Form id="login-form" onSubmit={handleSubmit} error={error} reset={inputReset} state={state}>
             <TextArea
               onChange={handleChange}
               required={true}
+              parent="login-form"
               type="email"
               name="email"
               disabled={false}
@@ -66,6 +91,7 @@ export default function Login() {
             <TextArea
               onChange={handleChange}
               required={true}
+              parent="login-form"
               type="password"
               name="password"
               disabled={false}

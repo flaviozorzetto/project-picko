@@ -4,12 +4,17 @@ import Banner from "../../components/Banner/Banner.js"
 import { useValidation } from "../../contexts/ValidationContext.js";
 
 export default function Form(props) {
-  const { validation } = useValidation();
+  const { validation, removeInput } = useValidation();
+  let state = props.state;
+  let reset = props.reset;
 
   const validateAndSubmit = (event) => {
     event.preventDefault()
     if(!validation()) return;
     props.onSubmit(event)
+
+    removeInput(); 
+    reset(Object.keys(state))
   }
 
   return (
