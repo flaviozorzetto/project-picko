@@ -27,7 +27,7 @@ export default function Login() {
       /* this if exists to avoid the possibility of inputList have step 2 inputs. 
       Using the state object as parameter would cause a error because the inputs 
       object only loads the current inputs) */
-      if (inputs[i]) { 
+      if (inputs["login-form"][i]) { 
         // will set the input value to ""
         setInputs((prev) => ({
           ...prev,
@@ -85,7 +85,7 @@ export default function Login() {
               type="email"
               name="email"
               disabled={false}
-              error={inputs["email"] && inputs["email"].message ? inputs["email"].message : error}
+              error={inputs["login-form"] && inputs["login-form"]["email"] && inputs["login-form"]["email"].message ? inputs["login-form"]["email"].message : error}
             >
               Email
             </TextArea>
@@ -97,7 +97,7 @@ export default function Login() {
               type="password"
               name="password"
               disabled={false}
-              error={inputs["password"] && inputs["password"].message ? inputs["password"].message : error}
+              error={inputs["login-form"] && inputs["login-form"]["password"] && inputs["login-form"]["password"].message ? inputs["login-form"]["password"].message : error}
             >
               Password
             </TextArea>

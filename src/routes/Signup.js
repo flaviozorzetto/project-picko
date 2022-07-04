@@ -50,7 +50,7 @@ export default function Signup() {
       /* this if exists to avoid the possibility of inputList have step 2 inputs. 
       Using the state object as parameter would cause a error because the inputs 
       object only loads the current inputs) */
-      if (inputs[i]) { 
+      if (inputs["signup-form"][i]) { 
         // will set the input value to ""
         setInputs((prev) => ({
           ...prev,
@@ -96,18 +96,6 @@ export default function Signup() {
               <Form id="signup-form" onSubmit={handleSubmit} error={error} reset={inputReset} state={state}>
                 {step == 1 ? (
                   <>
-                    <Button
-                      content="REMOVE INPUTS"
-                      type="button"
-                      theme="primary"
-                      onClick={() => {
-                        setCurrentInputs([]);
-                        inputReset(Object.keys(state));
-                      }}
-                      size="s"
-                      disabled={loading}
-                    />
-
                     <TextArea
                       formName="signup-form"
                       onChange={handleChange}
@@ -118,7 +106,7 @@ export default function Signup() {
                       name="first-name"
                       disabled={false}
                       error={
-                        inputs["first-name"] ? inputs["first-name"].message : ""
+                        inputs["signup-form"]["first-name"] ? inputs["signup-form"]["first-name"].message : ""
                       }
                     >
                       Name
@@ -133,7 +121,7 @@ export default function Signup() {
                       name="last-name"
                       disabled={false}
                       error={
-                        inputs["last-name"] ? inputs["last-name"].message : ""
+                        inputs["signup-form"]["last-name"] ? inputs["signup-form"]["last-name"].message : ""
                       }
                     >
                       Last name
@@ -148,7 +136,7 @@ export default function Signup() {
                       type="email"
                       name="email"
                       disabled={false}
-                      error={inputs["email"] ? inputs["email"].message : error}
+                      error={inputs["signup-form"]["email"] ? inputs["signup-form"]["email"].message : error}
                     >
                       Email
                     </TextArea>
@@ -163,7 +151,7 @@ export default function Signup() {
                       name="password"
                       disabled={false}
                       error={
-                        inputs["password"] ? inputs["password"].message : error
+                        inputs["signup-form"]["password"] ? inputs["signup-form"]["password"].message : error
                       }
                     >
                       Password
@@ -178,8 +166,8 @@ export default function Signup() {
                       name="password-confirmation"
                       disabled={false}
                       error={
-                        inputs["password-confirmation"]
-                          ? inputs["password-confirmation"].message
+                        inputs["signup-form"]["password-confirmation"]
+                          ? inputs["signup-form"]["password-confirmation"].message
                           : ""
                       }
                     >
@@ -212,8 +200,8 @@ export default function Signup() {
                       name="company-name"
                       disabled={false}
                       error={
-                        inputs["company-name"]
-                          ? inputs["company-name"].message
+                        inputs["signup-form"]["company-name"]
+                          ? inputs["signup-form"]["company-name"].message
                           : ""
                       }
                     >
@@ -229,7 +217,7 @@ export default function Signup() {
                       name="job-role"
                       disabled={false}
                       error={
-                        inputs["job-role"] ? inputs["job-role"].message : ""
+                        inputs["signup-form"]["job-role"] ? inputs["signup-form"]["job-role"].message : ""
                       }
                     >
                       Job role
@@ -243,7 +231,7 @@ export default function Signup() {
                       type="checkbox"
                       name="employee-quantity"
                       disabled={false}
-					  error={inputs["employee-quantity"] ? inputs["employee-quantity"].message : ""}
+					  error={inputs["signup-form"]["employee-quantity"] ? inputs["signup-form"]["employee-quantity"].message : ""}
                     >
                       How many employees?
                     </TextArea> */}

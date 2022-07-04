@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 const ValidationContext = React.createContext();
 
@@ -8,18 +8,26 @@ export const useValidation = () => {
 
 export const ValidationProvider = ({ children }) => {
   let isValidated = true;
-  const [inputs, setInputs] = useState({});
-  const [currentInputs, setCurrentInputs] = useState([]);
 
+  // needs to be automated to put all the forms that exists
+  const [inputs, setInputs] = useState({
+    "login-form": {},
+    "signup-form": {}
+  });
+
+  const [currentInputs, setCurrentInputs] = useState([]);
   const [currentForm, setCurrentForm] = useState("")
 
-  const addInput = (name, value, type) => {
+  const addInput = (name, value, type, currentForm) => {
     setInputs((prev) => ({
       ...prev,
-      [name]: {
-        "value": value,
-        "type": type,
-        "message": "",
+      [currentForm]: {
+        ...prev[currentForm],
+        [name]: {
+          "value": value,
+          "type": type,
+          "message": "",
+        }
       }
     }))
   }
@@ -27,9 +35,9 @@ export const ValidationProvider = ({ children }) => {
   const removeInput = () => {
     let inputsToRemove = [];
     for(let name of currentInputs) {
-      if(inputs[name]) {
+      if(inputs[currentForm][name]) {
         inputsToRemove.push(name);
-        delete inputs[name];
+        delete inputs[currentForm][name];
       }
     }
     return inputsToRemove
@@ -37,16 +45,18 @@ export const ValidationProvider = ({ children }) => {
 
   const customErrorMessages = {
     'input/local-error': (inputName, error) => {
-      console.log(inputName, error)
       setInputs((prev) => ({
         ...prev,
-        [inputName]: {
-          ...prev[inputName],
-          "message": {
-            message: error,
-            type: inputs[inputName].type,
-            scope: "local"
-          } 
+        [currentForm]: {
+          ...prev[currentForm],
+          [inputName]: {
+            ...prev[currentForm][inputName],
+            "message": {
+              message: error,
+              type: inputs[currentForm][inputName].type,
+              scope: "local"
+            } 
+          }
         }
       }))
       isValidated = false;
@@ -86,27 +96,30 @@ export const ValidationProvider = ({ children }) => {
       return errorMessage ? errorMessage : 'Failed to validate';
     }
 
-    for(let name in inputs) {
-      if(inputs[name].type == "password") {
-        if(name == "password-confirmation") {
-          if(inputs["password"].value !== inputs[name].value) {
-            customErrorMessages["input/local-error"](name, "Passwords do not match")  
+    for(let name in inputs[currentForm]) {
+      if(inputs[currentForm][name]) {
+
+        if(inputs[currentForm][name].type == "password") {
+          if(name == "password-confirmation") {
+            if(inputs[currentForm]["password"].value !== inputs[currentForm][name].value) {
+              customErrorMessages["input/local-error"](name, "Passwords do not match")  
+            }
           }
+  
+          if(inputs[currentForm][name].value.length > 0 && inputs[currentForm][name].value.length < 6) {
+            customErrorMessages["input/local-error"](name, "The password must have at least 6 characters")
+          }
+        } else if(inputs[currentForm][name].type == "email") {
+          if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(inputs[currentForm][name].value) == false) {
+            customErrorMessages["input/local-error"](name, "You must enter an valid email address")
+          } 
         }
-
-        if(inputs[name].value.length > 0 && inputs[name].value.length < 6) {
-          customErrorMessages["input/local-error"](name, "The password must have at least 6 characters")
+  
+        if(inputs[currentForm][name].value.length == 0) {
+          customErrorMessages["input/local-error"](name, `The ${inputs[currentForm][name].type} field cannot be empty`)
         }
-      } else if(inputs[name].type == "email") {
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(inputs[name].value) == false) {
-          customErrorMessages["input/local-error"](name, "You must enter an valid email address")
-        } 
       }
 
-      if(inputs[name].value.length == 0) {
-        customErrorMessages["input/local-error"](name, `The ${inputs[name].type} field cannot be empty`)
-      }
-      console.log("input value", inputs[name].value)
     }
     return isValidated;
   }

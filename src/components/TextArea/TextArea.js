@@ -19,18 +19,17 @@ export default function TextArea(props) {
 
   const { inputs, addInput, currentInputs, setCurrentInputs } = useValidation();
 
-  console.log("arrombado", props.formName)
   useEffect(() => {
     // adding inputs for the first time
-    if (!inputs[props.name]) {
-      addInput(props.name, "", props.type);
+    if (!inputs[props.formName][props.name]) {
+      addInput( props.name, "", props.type, props.formName);
     }
     // setCurrentInputs([]);
     setCurrentInputs((prev) => [...new Set([...prev, props.name])]);
   }, [props.name]); // rever se o local a se observar é o props.name
 
   const handleInput = (event) => {
-    addInput(props.name, event.target.value, event.target.type);
+    addInput( props.name, event.target.value, event.target.type, props.formName);
 
     if (inputError && inputError.scope == "local") {
       setErrorMessageDisplay(false);
@@ -38,11 +37,11 @@ export default function TextArea(props) {
   };
 
   useEffect(() => {
-    if (inputs[props.name] && inputs[props.name].message) {
-      setInputError(inputs[props.name].message);
+    if (inputs[props.formName] && inputs[props.formName][props.name] && inputs[props.formName][props.name].message) {
+      setInputError(inputs[props.formName][props.name].message);
       setErrorMessageDisplay(true);
     }
-  }, [inputs[props.name]]);
+  }, [inputs[props.formName][props.name]]);
 
   return (
     <>
