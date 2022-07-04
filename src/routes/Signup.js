@@ -11,7 +11,7 @@ import "./Signup.scss";
 import logo from "../assets/svgs/logo.svg";
 
 export default function Signup() {
-  const { validation, setCurrentInputs, removeInput, inputs } = useValidation();
+  const { validation, setInputs, setCurrentInputs, removeInput, inputs } = useValidation();
   const [step, setStep] = useState(1);
 
   const [state, setStates] = useState({
@@ -51,7 +51,10 @@ export default function Signup() {
       setError(customError);
     }
     setLoading(false);
+
+
   };
+
 
   return (
     <>
@@ -68,6 +71,34 @@ export default function Signup() {
               <Form id="signup-form" onSubmit={handleSubmit} error={error}>
                 {step == 1 ? (
                   <>
+					<Button
+                      content="REMOVE INPUTS"
+                      type="button"
+                      theme="primary"
+                      onClick={() => {
+						console.log("removido pelo button")
+						setCurrentInputs([]);
+
+						let stateName = "email"
+						setStates({
+							...state,
+							[stateName]: { value: "" }
+						});
+
+						// for(let i in state) {
+						// 	setStates({
+						// 		...state,
+						// 		[i]: { value: "" }
+						// 	})
+						// }
+						// console.log("STATES CLEANED?", state)
+
+						console.log("teste 2", state["email"])
+					  }}
+                      size="s"
+                      disabled={loading}
+                    />
+
                     <TextArea
                       onChange={handleChange}
                       value={state["first-name"].value}
@@ -192,12 +223,20 @@ export default function Signup() {
                       onClick={() => {
 						setStep(step - 1);
 						setCurrentInputs([]);
-						removeInput();
+						let inputsToRemove = removeInput();
+
+						inputsToRemove.forEach((input) => {
+							setStates((prev) => ({
+								...prev,
+								[input]: { value: "" }
+							}))
+						})
 					  }}
                       size="s"
                       disabled={loading}
                     />
                   </>
+				  
                 )}
               </Form>
             </>

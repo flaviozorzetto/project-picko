@@ -23,11 +23,16 @@ export const ValidationProvider = ({ children }) => {
   }
 
   const removeInput = () => {
+    let inputsToRemove = [];
     for(let name of currentInputs) {
       if(inputs[name]) {
+        inputsToRemove.push(name);
+        console.log("inputs name", inputs[name])
         delete inputs[name];
       }
     }
+    return inputsToRemove
+    // inputs["email"].value = ""
   }
 
   const customErrorMessages = {
