@@ -109,6 +109,7 @@ export default function Signup() {
                     />
 
                     <TextArea
+                      formName="signup-form"
                       onChange={handleChange}
                       value={state["first-name"].value}
                       required={true}
@@ -123,6 +124,7 @@ export default function Signup() {
                       Name
                     </TextArea>
                     <TextArea
+                      formName="signup-form"
                       onChange={handleChange}
                       value={state["last-name"].value}
                       required={true}
@@ -138,6 +140,7 @@ export default function Signup() {
                     </TextArea>
 
                     <TextArea
+                      formName="signup-form"
                       onChange={handleChange}
                       value={state["email"].value}
                       required={true}
@@ -151,6 +154,7 @@ export default function Signup() {
                     </TextArea>
 
                     <TextArea
+                      formName="signup-form"
                       onChange={handleChange}
                       value={state["password"].value}
                       required={true}
@@ -165,6 +169,7 @@ export default function Signup() {
                       Password
                     </TextArea>
                     <TextArea
+                      formName="signup-form"
                       onChange={handleChange}
                       value={state["password-confirmation"].value}
                       required={true}
@@ -197,6 +202,7 @@ export default function Signup() {
                 ) : (
                   <>
                     <TextArea
+                      formName="signup-form"
                       onChange={handleChange}
                       value={state["company-name"].value}
                       required={true}
@@ -214,6 +220,7 @@ export default function Signup() {
                       Company name
                     </TextArea>
                     <TextArea
+                      formName="signup-form"
                       onChange={handleChange}
                       value={state["job-role"].value}
                       required={true}
@@ -228,6 +235,7 @@ export default function Signup() {
                       Job role
                     </TextArea>
                     {/* <TextArea
+                      formName="signup-form"
                       onChange={handleChange}
                       value={state["employee-quantity"].value}
                       required={true}

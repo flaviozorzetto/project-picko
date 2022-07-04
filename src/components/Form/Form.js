@@ -4,9 +4,17 @@ import Banner from "../../components/Banner/Banner.js"
 import { useValidation } from "../../contexts/ValidationContext.js";
 
 export default function Form(props) {
-  const { validation, removeInput } = useValidation();
+  const { validation, removeInput, currentForm, setCurrentForm, currentInputs, inputs } = useValidation();
+  
   let state = props.state;
   let reset = props.reset;
+
+  // useEffect(() => {
+  //   if(props.id !== currentForm) {
+  //     console.log("TROCOU DE FORM", currentInputs)
+  //   }
+  //   setCurrentForm(props.id)
+  // }, [inputs.length])
 
   const validateAndSubmit = (event) => {
     event.preventDefault()

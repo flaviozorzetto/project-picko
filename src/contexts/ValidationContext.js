@@ -11,6 +11,8 @@ export const ValidationProvider = ({ children }) => {
   const [inputs, setInputs] = useState({});
   const [currentInputs, setCurrentInputs] = useState([]);
 
+  const [currentForm, setCurrentForm] = useState("")
+
   const addInput = (name, value, type) => {
     setInputs((prev) => ({
       ...prev,
@@ -110,7 +112,7 @@ export const ValidationProvider = ({ children }) => {
   }
 
   return (
-    <ValidationContext.Provider value={{inputs, setInputs, addInput, removeInput, currentInputs, setCurrentInputs, validation}}>
+    <ValidationContext.Provider value={{inputs, setInputs, addInput, removeInput, currentInputs, setCurrentInputs, validation, currentForm, setCurrentForm}}>
       {children}
     </ValidationContext.Provider>
   );

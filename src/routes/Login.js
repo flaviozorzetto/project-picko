@@ -78,6 +78,7 @@ export default function Login() {
 
           <Form id="login-form" onSubmit={handleSubmit} error={error} reset={inputReset} state={state}>
             <TextArea
+              formName="login-form"
               onChange={handleChange}
               required={true}
               parent="login-form"
@@ -89,6 +90,7 @@ export default function Login() {
               Email
             </TextArea>
             <TextArea
+              formName="login-form"
               onChange={handleChange}
               required={true}
               parent="login-form"
