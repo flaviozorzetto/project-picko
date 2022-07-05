@@ -26,13 +26,16 @@ export default function Form(props) {
 
   // setCurrentForm(props.id)
 
-  const validateAndSubmit = (event) => {
+  const validateAndSubmit = async (event) => {
     event.preventDefault()
     if(!validation()) return;
-    props.onSubmit(event)
 
-    removeInput(true); 
-    reset(Object.keys(state))
+    let res = await props.onSubmit(event)
+    console.log("dasasdasd", res)
+    if(res) {
+      removeInput(true); 
+      reset(Object.keys(state))
+    }
   }
 
   return (

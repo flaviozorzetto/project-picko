@@ -64,10 +64,13 @@ export default function Login() {
     if (res && res.error) {
       let customError = res.error;
       setError(customError);
+      setLoading(false);
+      return false;
     } else {
       navigate("/dashboard");
     }
     setLoading(false);
+    return true;
   }
 
   return (

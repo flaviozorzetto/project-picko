@@ -79,10 +79,9 @@ export default function Signup() {
       let customError = res.error;
       setError(customError);
     }
-
-    // removeInput() // will delete step 2 inputs, avoiding validation errors for when the form is reloaded
-    // inputReset(Object.keys(state));
+    // signup will not return a banner with error after submit, so the return will always be true
     setLoading(false);
+    return true;
   };
 
   return (
