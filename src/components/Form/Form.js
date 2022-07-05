@@ -31,7 +31,7 @@ export default function Form(props) {
     if(!validation()) return;
     props.onSubmit(event)
 
-    removeInput(); 
+    removeInput(true); 
     reset(Object.keys(state))
   }
 

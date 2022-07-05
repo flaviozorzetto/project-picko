@@ -32,11 +32,18 @@ export const ValidationProvider = ({ children }) => {
     }))
   }
 
-  const removeInput = () => {
+  const removeInput = (reset = false) => {
     let inputsToRemove = [];
+    if(reset) {
+      for(let name in inputs[currentForm]) {
+        delete inputs[currentForm][name]
+      }
+    }
+
     for(let name of currentInputs) {
       if(inputs[currentForm][name]) {
         inputsToRemove.push(name);
+        console.log("deletou:", inputs[currentForm][name])
         delete inputs[currentForm][name];
       }
     }
