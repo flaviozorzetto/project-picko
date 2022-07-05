@@ -1,5 +1,5 @@
 .signup-page {
-    width: 100vw;
+    width: 100%;
     height: auto;
     display: flex;
     justify-content: center;
@@ -9,5 +9,46 @@
 }
 
 // .container {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     flex-direction: column;
 
+//     h3 {
+//         font-size: 1.5rem;
+//       }
+    
+//       span {
+//         color: #5E626E;
+//       }
+    
+//       .logo {
+//         margin-bottom: 1rem;
+//       }
 // }
+
+.account-created {
+    margin-top: 5rem;
+    
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    button {
+        margin-top: 1.5rem;
+    }
+}
+
+.ellipse {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #006446;
+    width: 72px;
+    height: 72px;
+    border-radius: 500px;
+    background: #F8FFCC;
+}

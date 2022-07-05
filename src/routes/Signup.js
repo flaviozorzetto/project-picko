@@ -1,19 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useValidation } from "../contexts/ValidationContext.js";
 
 import Form from "../components/Form/Form.js";
 import TextArea from "../components/TextArea/TextArea.js";
+import Checkbox from "../components/Checkbox/Checkbox.js";
 import Button from "../components/Elements/Button/Button.js";
+import loadIcon from "../components/Elements/IconLoader/icon-loader.js";
 
 import "./Signup.scss";
 import logo from "../assets/svgs/logo.svg";
 
 export default function Signup() {
   const { validation, setInputs, setCurrentInputs, removeInput, inputs } =
-    useValidation();
+  useValidation();
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
 
   const [state, setStates] = useState({
     "first-name": { value: "" },
@@ -21,6 +24,7 @@ export default function Signup() {
     email: { value: "" },
     password: { value: "" },
     "password-confirmation": { value: "" },
+    "terms-checkbox": { value: "" },
     "company-name": { value: "" },
     "job-role": { value: "" },
     "employee-quantity": { value: "" },
@@ -85,15 +89,35 @@ export default function Signup() {
     <>
       <div className="signup-page">
         <div className="container">
-          {step == 3 ? (
-            <>
-              <h3>Account created successfully</h3>
-              <span>We sent a confirmation email for you.</span>
-            </>
-          ) : (
-            <>
-              <img src={logo} className="logo" />
-              <Form id="signup-form" onSubmit={handleSubmit} error={error} reset={inputReset} state={state}>
+              
+          <Form id="signup-form" onSubmit={handleSubmit} error={error} reset={inputReset} state={state}>
+              {step == 3 ? (
+                <>
+                  <div className="account-created">
+                    <div className="ellipse">
+                      <i>{loadIcon("check", {width: 32, height: 32})}</i>
+                    </div>
+                    <h3>Account created successfully</h3>
+                    <span>We sent a confirmation email for you.</span>
+                    <Button
+                      content="Go to login screen"
+                      type="button"
+                      theme="primary"
+                      size="b"
+                      full={true}
+                      disabled={loading}
+                      // onClick={navigate("/login")}
+                    />
+                  </div>
+                </>
+              ) : (
+                  <>
+                <div className="form-header">
+                  <img src={logo} className="logo" />
+                  <h3>Create new Account</h3>
+                  <span>Please tell us some personal information.</span>
+                  <span>Step {step} of 2</span>
+                </div>
                 {step == 1 ? (
                   <>
                     <TextArea
@@ -173,7 +197,11 @@ export default function Signup() {
                     >
                       Repeat password
                     </TextArea>
+
+                    {/* <Checkbox type="checkbox" name="checkbox" placeholder="Enter password" disabled={false}>TESTE</Checkbox> */}
+                    
                     <Button
+                      iconRight="arrow-right"
                       content="Continue"
                       type="button"
                       theme="primary"
@@ -183,7 +211,8 @@ export default function Signup() {
                           setCurrentInputs([]);
                         }
                       }}
-                      size="s"
+                      size="b"
+                      full={true}
                       disabled={loading}
                     />
                   </>
@@ -237,11 +266,12 @@ export default function Signup() {
                     </TextArea> */}
 
                     <Button
-                      content="Sign up"
+                      content="Create"
                       type="submit"
                       form="signup-form"
                       theme="primary"
-                      size="s"
+                      size="b"
+                      full={true}
                       disabled={loading}
                     />
                     <Button
@@ -260,14 +290,15 @@ export default function Signup() {
                         inputReset(inputsToRemove);
 
                       }}
-                      size="s"
+                      size="b"
+                      full={true}
                       disabled={loading}
                     />
                   </>
                 )}
-              </Form>
             </>
           )}
+        </Form>
 
           {/* <Button content={<Link to="/login">Sign in</Link>} type="button" theme="secondary" size="s" disabled={loading} /> */}
         </div>

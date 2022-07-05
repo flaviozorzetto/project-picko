@@ -37,7 +37,7 @@ export default function Form(props) {
 
   return (
     <form noValidate id={props.id} className="form" method={props.method} target={props.target} action={props.action} onSubmit={validateAndSubmit}>
-      {props.error && props.error.scope == "global" &&
+      {props.error && props.error.scope == "global" && currentForm !== "signup-form" &&
         <Banner iconLeft="alert-circle" theme="danger" content={props.error.message} />
       }
       {props.children}
