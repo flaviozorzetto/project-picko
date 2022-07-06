@@ -1,0 +1,86 @@
+$size: 60%;
+$secondary-size: calc(100% - $size);
+$animation-time: 0.55s;
+
+.modal__competence {
+	background-color: #ffffff;
+
+	&__container {
+		position: fixed;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		width: $size;
+		z-index: 10;
+		animation: $animation-time right-to-middle normal;
+
+		&_mtl {
+			right: unset;
+			left: 0;
+			animation: $animation-time middle-to-left normal;
+		}
+
+		&_ltm {
+			animation: $animation-time left-to-middle normal;
+		}
+
+		&_mtr {
+			animation: $animation-time middle-to-right normal;
+		}
+
+		@keyframes right-to-middle {
+			0% {
+				right: calc($size * -1);
+			}
+		}
+
+		@keyframes middle-to-left {
+			0% {
+				left: $secondary-size;
+			}
+		}
+
+		@keyframes left-to-middle {
+			0% {
+				right: $secondary-size;
+			}
+		}
+
+		@keyframes middle-to-right {
+			100% {
+				right: calc($size * -1);
+			}
+		}
+	}
+
+	&__backdrop {
+		position: fixed;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		z-index: 10;
+		backdrop-filter: brightness(0.6);
+	}
+
+	&__header {
+		display: flex;
+		align-items: center;
+		padding: 1.5rem;
+		gap: 0 1rem;
+		border-bottom: 1px solid #e3e5e8;
+
+		h2 {
+			font-weight: 500;
+		}
+	}
+
+	&_icon_button {
+		cursor: pointer;
+	}
+
+	&_textarea_placeholder {
+		border-bottom: 1px solid #e3e5e8;
+		padding: 1.5rem;
+	}
+}

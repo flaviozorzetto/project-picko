@@ -2,13 +2,16 @@ import loadIcon from '../../Elements/IconLoader/icon-loader';
 import Button from '../../Elements/Button/Button';
 import Header from '../../Elements/Header/Header';
 import Footer from '../../Elements/Footer/Footer';
-import './InterviewModal.scss';
 import TextArea from '../../TextArea/TextArea';
+import Competences from './Competences/Competences';
 import { useState } from 'react';
+import './InterviewModal.scss';
 
 export default function InterviewModal(props) {
 	const [step, setStep] = useState(1);
 	const [jobTitle, setJobTitle] = useState('');
+	const [competences, setCompetences] = useState([]);
+	const [competenceSettings, setCompetenceSettings] = useState(false);
 
 	const handleChange = e => {
 		setJobTitle(e.target.value);
@@ -43,6 +46,23 @@ export default function InterviewModal(props) {
 						</TextArea>
 					)}
 				</div>
+				{step === 2 && (
+					<>
+						<div className="modal__competences">
+							<div
+								className="modal__competences__card modal__competences__card_empty"
+								onClick={() => {
+									setCompetenceSettings(true);
+								}}
+							>
+								Add new competence
+							</div>
+						</div>
+						{competenceSettings && (
+							<Competences setCompetenceSettings={setCompetenceSettings} />
+						)}
+					</>
+				)}
 			</main>
 			<Footer>
 				{step === 1 ? (
@@ -63,7 +83,22 @@ export default function InterviewModal(props) {
 							disabled={jobTitle.length === 0}
 						/>
 					</>
-				) : null}
+				) : (
+					<>
+						<Button
+							theme="secondary"
+							content="Just save the interview"
+							size="m"
+							onClick={props.closeModal}
+						/>
+						<Button
+							theme="primary"
+							content="Save interview and add candidates"
+							size="m"
+							disabled={true}
+						/>
+					</>
+				)}
 			</Footer>
 		</div>
 	);

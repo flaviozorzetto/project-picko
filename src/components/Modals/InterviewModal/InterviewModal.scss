@@ -1,13 +1,29 @@
 .modal {
 	font: inherit;
+	&__competences {
+		display: flex;
+		gap: 0 1.5rem;
+		&__card {
+			width: 267px;
+			height: 330px;
+			border-radius: 0.5rem;
+			cursor: pointer;
+			&_empty {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border: 2px dashed #acb0b9;
+				color: #5e626e;
+			}
+		}
+	}
+
 	&__interview {
-		position: absolute;
-		height: 100vh;
+		position: fixed;
 		top: 0;
 		right: 0;
 		left: 0;
 		bottom: 0;
-		z-index: 1;
 		background-color: #ffffff;
 		--header-comp-padding: 1.5rem 1.5rem;
 	}
