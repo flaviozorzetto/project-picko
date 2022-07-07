@@ -56,4 +56,14 @@ async function queryUser(uid) {
 	}
 }
 
-export { getInterviews, createUserDocument, queryUser };
+async function getCompetencies() {
+	console.log('queried for competence');
+
+	const docRef = doc(db, 'competences', 'axis');
+
+	const querySnapshot = await getDoc(docRef);
+
+	console.log(querySnapshot);
+}
+
+export { getInterviews, createUserDocument, queryUser, getCompetencies };

@@ -2,21 +2,27 @@ import './Competences.scss';
 import '../../../Elements/IconLoader/icon-loader';
 import loadIcon from '../../../Elements/IconLoader/icon-loader';
 import TextArea from '../../../TextArea/TextArea';
-import { useState } from 'react';
 import Button from '../../../Elements/Button/Button';
+import { getCompetencies } from '../../../Manager/Firebase';
+import { useEffect, useState } from 'react';
 
 export default function Competences(props) {
 	const [searchInput, setSearchInput] = useState('');
 	const [stepManager, setStepManager] = useState({
-		mode: 'frontward',
 		closing: false,
 		step: 1,
 	});
+	const [firstRender, setFirstRender] = useState(true);
 
-	// const [closeManager, setCloseManager] = useState({
-	// 	step: stepManager.step,
-	// 	closing: false,
-	// });
+	useEffect(() => {
+		async function fetchData() {
+			await getCompetencies().then(() => {
+				console.log("finished")
+			});
+		}
+
+		fetchData();
+	}, []);
 
 	const handleSearchInput = e => {
 		setSearchInput(e.target.value);
@@ -32,14 +38,14 @@ export default function Competences(props) {
 	};
 
 	const handleCloseClick = step => {
-		setStepManager({ mode: 'backward', step: step - 1, closing: true });
+		setStepManager({ step, closing: true });
 		const turnOffSettings = () => {
 			if (step === 1) {
 				props.setCompetenceSettings(false);
 			}
 		};
 		delayedFunction(turnOffSettings, 500).then(() => {
-			setStepManager({ mode: 'backward', step: step - 1, closing: false });
+			setStepManager({ step: step - 1, closing: false });
 		});
 	};
 
@@ -47,13 +53,19 @@ export default function Competences(props) {
 		<>
 			<div className="modal__competence__backdrop"></div>
 			<div
-				className={`modal__competence modal__competence__container${
-					stepManager.step === 0
-						? ' modal__competence__container_mtr'
-						: stepManager.step === 1 && stepManager.mode === 'backward'
-						? ' modal__competence__container_ltm'
+				className={`modal__competence modal__competence__container modal__competence__container_${
+					stepManager.step === 1
+						? stepManager.closing
+							? 'mtr'
+							: firstRender
+							? 'rtm'
+							: ''
+						: stepManager.step === 2
+						? stepManager.closing
+							? 'ltm'
+							: 'mtl'
 						: ''
-				}${stepManager.step === 2 ? ' modal__competence__container_mtl' : ''}`}
+				}`}
 			>
 				<div className="modal__competence__header">
 					<div
@@ -79,30 +91,31 @@ export default function Competences(props) {
 					theme="primary"
 					size="b"
 					onClick={() => {
-						setStepManager({ ...stepManager, mode: 'frontward', step: 2 });
+						setStepManager({ ...stepManager, step: stepManager.step + 1 });
+						if (firstRender === true) {
+							setFirstRender(false);
+						}
 					}}
 				/>
 			</div>
 			{stepManager.step === 2 && (
-				<div className="modal__competence__backdrop"></div>
-			)}
-			{(stepManager.step === 2 || (stepManager.step === 1 && stepManager.closing === true)) && (
-				<div
-					className={`modal__competence modal__competence__container${
-						stepManager.step === 1 && stepManager.closing
-							? ' modal__competence__container_mtr'
-							: ''
-					}`}
-				>
-					<Button
-						content="Back"
-						theme="primary"
-						size="b"
-						onClick={() => {
-							handleCloseClick(stepManager.step);
-						}}
-					/>
-				</div>
+				<>
+					<div className="modal__competence__backdrop"></div>
+					<div
+						className={`modal__competence modal__competence__container modal__competence__container_rtm${
+							stepManager.closing ? ' modal__competence__container_mtr' : ''
+						}`}
+					>
+						<Button
+							content="Back"
+							theme="primary"
+							size="b"
+							onClick={() => {
+								handleCloseClick(stepManager.step);
+							}}
+						/>
+					</div>
+				</>
 			)}
 		</>
 	);

@@ -12,7 +12,10 @@ $animation-time: 0.55s;
 		bottom: 0;
 		width: $size;
 		z-index: 10;
-		animation: $animation-time right-to-middle normal;
+
+		&_rtm {
+			animation: $animation-time right-to-middle normal;
+		}
 
 		&_mtl {
 			right: unset;
