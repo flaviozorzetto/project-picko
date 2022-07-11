@@ -5,6 +5,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    font-family: 'Inter';
+    font-style: normal;
 }
 
 .login-container {
@@ -19,9 +21,23 @@
 .logo {
     width: 10.5rem;
     height: auto;
+    margin-bottom: 2.5rem;
 }
 
-button {
-    // width: 100%;
-    // height: 3rem; // size b
+.redirect-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    
+    a {
+        color: #006446;
+        text-underline-offset: 2px;
+    }
+}
+
+.forgot-password-link {
+    a {
+        text-decoration: none;
+    }
 }

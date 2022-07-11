@@ -88,7 +88,7 @@ export function AuthProvider({ children }) {
 			scope: 'global',
 		},
 		'auth/too-many-requests': {
-			message: 'Too many requests with this email. Please wait.',
+			message: 'Too many requests with this email',
 			type: 'password',
 			scope: 'global',
 		},
@@ -96,11 +96,6 @@ export function AuthProvider({ children }) {
 			message: 'Email already exists.',
 			type: 'email',
 			scope: 'global',
-		},
-		'auth/invalid-email': {
-			message: 'Your email is badly formatted',
-			type: 'email',
-			scope: 'local',
 		},
 	};
 

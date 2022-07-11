@@ -6,21 +6,24 @@ import Dashboard from './routes/Dashboard.js';
 import Login from './routes/Login.js';
 import PrivateRoute from './routes/PrivateRoute.js';
 import ForgotPassword from './routes/ForgotPassword.js';
+import { ValidationProvider } from './contexts/ValidationContext.js';
 
 export default function App() {
 	return (
 		<>
 			<Router>
-				<AuthProvider>
-					<Routes>
-						<Route exact path="/" element={<PrivateRoute />}>
-							<Route exact path="/dashboard" element={<Dashboard />} />
-						</Route>
-						<Route path="/signup" element={<Signup />} />
-						<Route path="/login" element={<Login />} />
-						<Route path="/forgot-password" element={<ForgotPassword />} />
-					</Routes>
-				</AuthProvider>
+				<ValidationProvider>
+					<AuthProvider>
+						<Routes>
+							<Route exact path="/" element={<PrivateRoute />}>
+								<Route exact path="/dashboard" element={<Dashboard />} />
+							</Route>
+							<Route path="/signup" element={<Signup />} />
+							<Route path="/login" element={<Login />} />
+							<Route path="/forgot-password" element={<ForgotPassword />} />
+						</Routes>
+					</AuthProvider>
+				</ValidationProvider>
 			</Router>
 		</>
 	);

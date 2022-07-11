@@ -1,231 +1,235 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useAuth } from '../contexts/AuthContext.js';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from "react";
+import { useAuth } from "../contexts/AuthContext.js";
+import { useValidation } from "../contexts/ValidationContext.js";
+import { Link } from "react-router-dom";
 
-import Form from '../components/Form/Form.js';
-import TextArea from '../components/TextArea/TextArea.js';
-import Button from '../components/Elements/Button/Button.js';
+import Form from "../components/Form/Form.js";
+import TextArea from "../components/TextArea/TextArea.js";
+import Button from "../components/Elements/Button/Button.js";
+import loadIcon from "../components/Elements/IconLoader/icon-loader.js";
 
-import './Signup.scss';
-import logo from '../assets/svgs/logo.svg';
+import "./Signup.scss";
+import logo from "../assets/svgs/logo.svg";
 
 export default function Signup() {
-	const [step, setStep] = useState(1);
+  const { inputs, validate, addNewInput } = useValidation();
+  const [step, setStep] = useState(1);
 
-	const backToPreviousStep = () => setStep(step - 1);
+  const backToPreviousStep = () => setStep(step - 1);
 
-	const validateForNextStep = () => {
-		if (validateLocalInputs()) {
-			setStep(step + 1);
-		}
-	};
+  const validateForNextStep = () => {
+    if (validate(step)) {
+      setStep(step + 1);
+      return true;
+    } else {
+      return false;
+    }
+  };
 
-	const [state, setStates] = useState({
-		'first-name': { value: '' },
-		'last-name': { value: '' },
-		email: { value: '' },
-		password: { value: '' },
-		'password-confirmation': { value: '' },
-		'company-name': { value: '' },
-		'job-role': { value: '' },
-		'employee-quantity': { value: '' },
-	});
+  const [state, setStates] = useState({
+    "first-name": { value: "", message: "", type: "", step: 1 },
+    "last-name": { value: "", message: "", type: "", step: 1 },
+    email: { value: "", message: "", type: "", step: 1 },
+    password: { value: "", message: "", type: "", step: 1 },
+    "password-confirmation": { value: "", message: "", type: "", step: 1 },
+    "company-name": { value: "", message: "", type: "", step: 2 },
+    "job-role": { value: "", message: "", type: "", step: 2 },
+    // 'employee-quantity': { value: '', message: '', type: '', step: 2 },
+  });
 
-	const [error, setError] = useState('');
-	const handleChange = event => {
-		let stateName = event.target.name;
+  const [error, setError] = useState("");
+  const handleChange = (event) => {
+    let stateName = event.target.name;
 
-		// if(props.error) {
-		//   setErrorMessageDisplay(false);
-		// }
+    setStates((prev) => ({
+      ...prev,
+      [stateName]: {
+        value: event.target.value,
+        message: inputs[stateName].message,
+        type: event.target.type,
+        step: state[stateName].step,
+      },
+    }));
+  };
 
-		setStates({
-			...state,
-			[stateName]: { value: event.target.value },
-		});
-	};
+  useEffect(() => {
+    addNewInput(state);
+  }, [state]);
 
-	useEffect(() => {
-		console.log('!!!', state);
-	}, [state]);
+  const { signup } = useAuth();
+  const [loading, setLoading] = useState(false);
 
-	const { signup } = useAuth();
-	const [loading, setLoading] = useState(false);
+  const handleSubmit = async (e) => {
+    if (!validateForNextStep()) return;
+    setStep(step + 1);
 
-	const validateLocalInputs = () => {
-		if (state['password'].value.length < 6) {
-			return setError({
-				message: 'Password must have at least 6 characters',
-				type: 'password',
-				scope: 'local',
-			});
-		} else if (
-			state['password'].value !== state['password-confirmation'].value
-		) {
-			return setError({
-				message: 'Passwords do not match',
-				type: 'password-confirmation',
-				scope: 'local',
-			});
-		} else {
-			return true;
-		}
-	};
+    e.preventDefault();
+    setLoading(true);
+    const res = await signup(state);
 
-	const handleSubmit = async e => {
-		if (!validateLocalInputs()) return;
-		setStep(step + 1);
+    if (res && res.error) {
+      let customError = res.error;
+      setError(customError);
+    }
+    setLoading(false);
+  };
 
-		e.preventDefault();
-		setLoading(true);
-		const res = await signup(state);
+  return (
+    <>
+      <div className="signup-page">
+        <div className="container">
+          <Form id="signup-form" onSubmit={handleSubmit} error={error}>
+            {step == 3 ? (
+              <>
+                <div className="account-created">
+                  <div className="ellipse">
+                    <i>{loadIcon("check", { width: 32, height: 32 })}</i>
+                  </div>
+                  <h3>Account created successfully</h3>
+                  <span>We sent a confirmation email for you.</span>
+                  <Button
+                    content="Go to login screen"
+                    type="button"
+                    theme="primary"
+                    size="b"
+                    full={true}
+                    disabled={loading}
+                    // onClick={navigate("/login")}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="form-header">
+                  <img src={logo} className="logo" />
+                  <h3>Create new Account</h3>
+                  <span>Please tell us some personal information.</span>
+                  <span>Step {step} of 2</span>
+                </div>
+                {step == 1 ? (
+                  <>
+                    <TextArea
+                      onChange={handleChange}
+                      value={state["first-name"].value}
+                      required={true}
+                      type="text"
+                      name="first-name"
+                      disabled={false}
+                    >
+                      Name
+                    </TextArea>
+                    <TextArea
+                      onChange={handleChange}
+                      value={state["last-name"].value}
+                      required={true}
+                      type="text"
+                      name="last-name"
+                      disabled={false}
+                    >
+                      Last name
+                    </TextArea>
 
-		if (res && res.error) {
-			let customError = res.error;
-			setError(customError);
-		}
-		setLoading(false);
-	};
+                    <TextArea
+                      onChange={handleChange}
+                      value={state["email"].value}
+                      required={true}
+                      type="email"
+                      name="email"
+                      disabled={false}
+                    >
+                      Email
+                    </TextArea>
 
-	return (
-		<>
-			<div className="signup-page">
-				<div className="container">
-					{step == 3 ? (
-						<>
-							<h3>Account created successfully</h3>
-							<span>We sent a confirmation email for you.</span>
-						</>
-					) : (
-						<>
-							<img src={logo} className="logo" />
-							<Form id="signup-form" onSubmit={handleSubmit} error={error}>
-								{step == 1 ? (
-									<>
-										<TextArea
-											onChange={handleChange}
-											value={state['first-name'].value}
-											required={true}
-											id="1"
-											type="text"
-											name="first-name"
-											disabled={false}
-										>
-											Name
-										</TextArea>
-										<TextArea
-											onChange={handleChange}
-											value={state['last-name'].value}
-											required={true}
-											type="text"
-											name="last-name"
-											disabled={false}
-										>
-											Last name
-										</TextArea>
+                    <TextArea
+                      onChange={handleChange}
+                      value={state["password"].value}
+                      required={true}
+                      type="password"
+                      name="password"
+                      disabled={false}
+                    >
+                      Password
+                    </TextArea>
+                    <TextArea
+                      onChange={handleChange}
+                      value={state["password-confirmation"].value}
+                      required={true}
+                      type="password"
+                      name="password-confirmation"
+                      disabled={false}
+                    >
+                      Repeat password
+                    </TextArea>
+                    <Button
+                      content="Continue"
+                      type="button"
+                      theme="primary"
+                      onClick={() => validateForNextStep()}
+                      size="b"
+                      full={true}
+                      disabled={loading}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <TextArea
+                      onChange={handleChange}
+                      value={state["company-name"].value}
+                      required={true}
+                      type="text"
+                      name="company-name"
+                      disabled={false}
+                    >
+                      Company name
+                    </TextArea>
+                    <TextArea
+                      onChange={handleChange}
+                      value={state["job-role"].value}
+                      required={true}
+                      type="text"
+                      name="job-role"
+                      disabled={false}
+                    >
+                      Job role
+                    </TextArea>
+                    {/* <TextArea
+                        onChange={handleChange}
+                        value={state['employee-quantity'].value}
+                        required={true}
+                        type="checkbox"
+                        name="employee-quantity"
+                        disabled={false}
+                      >
+                        How many employees?
+                      </TextArea> */}
 
-										<TextArea
-											onChange={handleChange}
-											value={state['email'].value}
-											required={true}
-											type="email"
-											name="email"
-											disabled={false}
-											error={error}
-										>
-											Email
-										</TextArea>
+                    <Button
+                      content="Sign up"
+                      type="submit"
+                      form="signup-form"
+                      theme="primary"
+                      size="b"
+                      full={true}
+                      disabled={loading}
+                    />
+                    <Button
+                      content="Back to step 1"
+                      type="button"
+                      theme="primary"
+                      onClick={() => backToPreviousStep()}
+                      size="b"
+                      full={true}
+                      disabled={loading}
+                    />
+                  </>
+                )}
+              </>
+            )}
+          </Form>
 
-										<TextArea
-											onChange={handleChange}
-											value={state['password'].value}
-											required={true}
-											type="password"
-											name="password"
-											disabled={false}
-											error={error}
-										>
-											Password
-										</TextArea>
-										<TextArea
-											onChange={handleChange}
-											value={state['password-confirmation'].value}
-											required={true}
-											type="password"
-											name="password-confirmation"
-											disabled={false}
-											error={error}
-										>
-											Repeat password
-										</TextArea>
-										<Button
-											content="Continue"
-											type="button"
-											theme="primary"
-											onClick={() => validateForNextStep()}
-											size="s"
-											disabled={loading}
-										/>
-									</>
-								) : (
-									<>
-										<TextArea
-											onChange={handleChange}
-											value={state['company-name'].value}
-											required={true}
-											id="2"
-											type="text"
-											name="company-name"
-											disabled={false}
-										>
-											Company name
-										</TextArea>
-										<TextArea
-											onChange={handleChange}
-											value={state['job-role'].value}
-											required={true}
-											type="text"
-											name="job-role"
-											disabled={false}
-										>
-											Job role
-										</TextArea>
-										<TextArea
-											onChange={handleChange}
-											value={state['employee-quantity'].value}
-											required={true}
-											type="checkbox"
-											name="employee-quantity"
-											disabled={false}
-										>
-											How many employees?
-										</TextArea>
-
-										<Button
-											content="Sign up"
-											type="submit"
-											form="signup-form"
-											theme="primary"
-											size="s"
-											disabled={loading}
-										/>
-										<Button
-											content="Back to step 1"
-											type="button"
-											theme="primary"
-											onClick={() => backToPreviousStep()}
-											size="s"
-											disabled={loading}
-										/>
-									</>
-								)}
-							</Form>
-						</>
-					)}
-
-					{/* <Button content={<Link to="/login">Sign in</Link>} type="button" theme="secondary" size="s" disabled={loading} /> */}
-				</div>
-			</div>
-		</>
-	);
+          {/* <Button content={<Link to="/login">Sign in</Link>} type="button" theme="secondary" size="s" disabled={loading} /> */}
+        </div>
+      </div>
+    </>
+  );
 }

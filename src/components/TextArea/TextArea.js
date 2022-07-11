@@ -3,23 +3,40 @@ import loadIcon from "../Elements/IconLoader/icon-loader";
 import { Link, useNavigate } from "react-router-dom";
 import Banner from "../../components/Banner/Banner.js";
 import "./TextArea.scss";
+import { useValidation } from "../../contexts/ValidationContext.js";
 
 export default function TextArea(props) {
+  const { inputs, setInputs } = useValidation();
+
   const [errorMessageDisplay, setErrorMessageDisplay] = useState(
-    props.error == true
+    props.globalError == true
   );
 
   useEffect(() => {
-    if (props.error) {
+    if (props.globalError) {
       setErrorMessageDisplay(true);
     }
-  }, [props.error]);
+  }, [props.globalError]);
 
   const handleInput = (event) => {
-    if (props.error && props.error.scope == "local") {
-      setErrorMessageDisplay(false);
+    if (inputs[props.name] && inputs[props.name].message) {
+      //  || props.globalError
+      setInputs((prev) => ({
+        ...prev,
+        [props.name]: {
+          ...prev[props.name],
+          message: "",
+        },
+      }));
+      // setErrorMessageDisplay(false);
     }
   };
+
+  useEffect(() => {
+    if (inputs[props.name] && inputs[props.name].message) {
+      setErrorMessageDisplay(true);
+    }
+  }, [inputs[props.name]]);
 
   return (
     <>
@@ -34,10 +51,8 @@ export default function TextArea(props) {
             onChange={props.onChange}
             className={`text_input${
               errorMessageDisplay &&
-              props.error &&
-              ((props.error.scope == "local" &&
-                props.error.type == props.name) ||
-                props.error.scope == "global")
+              (props.globalError ||
+                (inputs[props.name] && inputs[props.name].message))
                 ? " text_input_error"
                 : ""
             }${props.iconLeft ? " pl-50" : ""}${
@@ -60,14 +75,11 @@ export default function TextArea(props) {
         </div>
       </div>
 
-      {errorMessageDisplay &&
-        props.error &&
-        props.error.scope == "local" &&
-        props.error.type == props.name && (
-          <div className="error_message-container">
-            <span className="error_message">{props.error.message}</span>
-          </div>
-        )}
+      {errorMessageDisplay && inputs[props.name] && inputs[props.name].message && (
+        <div className="error_message-container">
+          <span className="error_message">{inputs[props.name].message}</span>
+        </div>
+      )}
     </>
   );
 }
