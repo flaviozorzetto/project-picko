@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import Form from "../components/Form/Form.js";
 import TextArea from "../components/TextArea/TextArea.js";
 import Button from "../components/Elements/Button/Button.js";
+import Checkbox from "../components/Checkbox/Checkbox.js";
+
 import loadIcon from "../components/Elements/IconLoader/icon-loader.js";
 
 import "./Signup.scss";
@@ -15,11 +17,9 @@ export default function Signup() {
   const { inputs, validate, addNewInput } = useValidation();
   const [step, setStep] = useState(1);
 
-  const backToPreviousStep = () => setStep(step - 1);
-
   const validateForNextStep = () => {
     if (validate(step)) {
-      setStep(step + 1);
+      setStep(2);
       return true;
     } else {
       return false;
@@ -32,6 +32,7 @@ export default function Signup() {
     email: { value: "", message: "", type: "", step: 1 },
     password: { value: "", message: "", type: "", step: 1 },
     "password-confirmation": { value: "", message: "", type: "", step: 1 },
+    "terms-checkbox": { value: "", message: "", type: "", step: 1 },
     "company-name": { value: "", message: "", type: "", step: 2 },
     "job-role": { value: "", message: "", type: "", step: 2 },
     // 'employee-quantity': { value: '', message: '', type: '', step: 2 },
@@ -44,13 +45,13 @@ export default function Signup() {
     setStates((prev) => ({
       ...prev,
       [stateName]: {
-        value: event.target.value,
+        value: event.target.type == "checkbox" ? event.target.checked : event.target.value,
         message: inputs[stateName].message,
         type: event.target.type,
         step: state[stateName].step,
       },
     }));
-  };
+  }
 
   useEffect(() => {
     addNewInput(state);
@@ -60,10 +61,10 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    if (!validateForNextStep()) return;
-    setStep(step + 1);
-
     e.preventDefault();
+    setStep(3);
+    // console.log("SE DEU LOG É PQ TA VALIDO - current step: ", step);
+
     setLoading(true);
     const res = await signup(state);
 
@@ -72,7 +73,10 @@ export default function Signup() {
       setError(customError);
     }
     setLoading(false);
+    // console.log("LOG DEPOIS DE CRIAR O USER DOC - current step:", step)
   };
+
+  console.log("CURRENT STEP: ", step)
 
   return (
     <>
@@ -160,11 +164,17 @@ export default function Signup() {
                     >
                       Repeat password
                     </TextArea>
+
+                    <Checkbox onChange={handleChange} content={<><span>I agree to the <Link to='/'>terms & services</Link></span></>} type="checkbox" name="terms-checkbox" placeholder="Enter password" disabled={false} checked={state["terms-checkbox"].value}/>
+
                     <Button
-                      content="Continue"
+                      content="Continue 01"
                       type="button"
                       theme="primary"
-                      onClick={() => validateForNextStep()}
+                      onClick={() => {
+                        validateForNextStep()
+                        console.log("CLICK 01 ");
+                      }}
                       size="b"
                       full={true}
                       disabled={loading}
@@ -211,12 +221,18 @@ export default function Signup() {
                       size="b"
                       full={true}
                       disabled={loading}
+                      onClick={(e) => {
+                        // handleSubmit(e)
+                        // validateForNextStep()
+                        // validate(step);
+                        // setStep(3);
+                      }}
                     />
                     <Button
                       content="Back to step 1"
                       type="button"
                       theme="primary"
-                      onClick={() => backToPreviousStep()}
+                      onClick={() => setStep(1)}
                       size="b"
                       full={true}
                       disabled={loading}

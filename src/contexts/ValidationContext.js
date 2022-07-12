@@ -59,6 +59,7 @@ export const ValidationProvider = ({ children }) => {
   }
 
   const validate = (stepToValidate = 1) => {
+    console.log("VALIDATED!")
     isValidated = true;
     for(let currentInput in inputs) {
       if(inputs[currentInput].step == stepToValidate) {
@@ -79,8 +80,9 @@ export const ValidationProvider = ({ children }) => {
             setValidationErrorMessage(currentInput, "Passwords do not match")
           }
         }
+        console.log(inputs[currentInput])
 
-        if(inputs[currentInput].value.length == 0) {
+        if(inputs[currentInput].value.length == 0 || !inputs[currentInput].value) {
           setValidationErrorMessage(currentInput, "This field cannot be empty.")
         }
       }
@@ -90,7 +92,7 @@ export const ValidationProvider = ({ children }) => {
         on the step 2 and get back to step 1. This condition will fix this bug.
       */
       if(inputs[currentInput].message && inputs[currentInput].step <= stepToValidate) {
-        console.log("theres a error message on the: ", currentInput)
+        console.log("theres a error message on the: ", inputs[currentInput])
         isValidated = false;
       }
     }

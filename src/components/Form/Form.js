@@ -13,7 +13,7 @@ export default function Form(props) {
   const formValidation = (event) => {
     event.preventDefault();
 
-    if (!validate()) return;
+    if (!validate(2)) return;
     props.onSubmit(event);
   }
 

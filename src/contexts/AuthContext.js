@@ -27,16 +27,25 @@ export function AuthProvider({ children }) {
 
 		const { firstName, lastName, email, password, companyName, jobRole } =
 			userInfo;
-
+		console.log("passou aqui 01")
 		try {
+			// bug acontece aqui (step voltando pro default)
 			let res = await auth.createUserWithEmailAndPassword(email, password);
+			console.log("passou aqui 02") // voltou pro step 1
 			const uid = res.user.uid;
+			// debugger
 			await res.user.sendEmailVerification();
+			// -=---------------
 
+
+			console.log("passou aqui 03")
+			
 			await createUserDocument({
 				uid,
 				...userInfo,
 			});
+
+			console.log("passou aqui 04")
 
 			return res;
 		} catch (err) {
