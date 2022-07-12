@@ -64,6 +64,25 @@ $animation-time: 0.55s;
 		bottom: 0;
 		z-index: 10;
 		backdrop-filter: brightness(0.6);
+		animation: $animation-time fade-in-brightness;
+		&_out {
+			animation: $animation-time fade-out-brightness;
+		}
+
+		@keyframes fade-out-brightness {
+			0% {
+				backdrop-filter: brightness(0.6);
+			}
+
+			100% {
+				backdrop-filter: brightness(1);
+			}
+		}
+		@keyframes fade-in-brightness {
+			0% {
+				backdrop-filter: brightness(1);
+			}
+		}
 	}
 
 	&__header {
@@ -85,5 +104,52 @@ $animation-time: 0.55s;
 	&_textarea_placeholder {
 		border-bottom: 1px solid #e3e5e8;
 		padding: 1.5rem;
+	}
+}
+
+.competence__accordion {
+	--color: #fc83b0;
+
+	&_o {
+		--color: #fb9e6a;
+	}
+
+	&__container {
+		display: flex;
+		align-items: center;
+		padding: 1.2rem 1.5rem;
+		border-bottom: 1px solid #e3e5e8;
+		&::before {
+			content: '';
+			margin-right: 1rem;
+			background: var(--color);
+			width: 0.5rem;
+			height: 0.5rem;
+			border-radius: 100%;
+		}
+	}
+	&__title {
+		color: var(--color);
+		font-size: 1.1rem;
+		font-weight: 500;
+		font-family: inherit;
+	}
+	&__icon {
+		margin-left: auto;
+	}
+	&__content {
+		padding: 1.5rem 1.5rem 1.5rem 3rem;
+		border-bottom: 1px solid #e3e5e8;
+		display: flex;
+		align-items: center;
+		&__title {
+			font-weight: 500;
+			text-transform: capitalize;
+		}
+		&__description {
+			margin-top: 1rem;
+			color: #838895;
+			font-size: 0.9rem;
+		}
 	}
 }

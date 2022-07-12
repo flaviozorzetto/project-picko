@@ -57,13 +57,37 @@ async function queryUser(uid) {
 }
 
 async function getCompetencies() {
-	console.log('queried for competence');
+	const axisSnapshot = await getDocs(collection(db, 'axis'));
+	const competencies = {};
 
-	const docRef = doc(db, 'competences', 'axis');
+	for (let a = 0; a < axisSnapshot.docs.length; a++) {
+		const axisDocRef = axisSnapshot.docs[a];
+		const axisData = axisDocRef.data();
+		const axisDocTitle = axisDocRef.id;
+		competencies[axisDocTitle] = {};
 
-	const querySnapshot = await getDoc(docRef);
+		for (let b = 0; b < axisData.competences.length; b++) {
+			const competenceDocRef = await getDoc(axisData.competences[b]);
+			const competenceData = await competenceDocRef.data();
+			const competenceDocTitle = competenceDocRef.id;
+			competencies[axisDocTitle][competenceDocTitle] = {};
+			competencies[axisDocTitle][competenceDocTitle]['description'] =
+				competenceData.description;
+			competencies[axisDocTitle][competenceDocTitle]['levels'] = {};
 
-	console.log(querySnapshot);
+			if (competenceData.levels) {
+				for (let c = 0; c < competenceData.levels.length; c++) {
+					const levelDocRef = await getDoc(competenceData.levels[c]);
+					const levelData = await levelDocRef.data();
+					competencies[axisDocTitle][competenceDocTitle]['levels'][
+						levelDocRef.id
+					] = levelData;
+				}
+			}
+		}
+	}
+
+	return competencies;
 }
 
 export { getInterviews, createUserDocument, queryUser, getCompetencies };
