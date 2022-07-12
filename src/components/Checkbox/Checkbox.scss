@@ -30,6 +30,10 @@
   }
 }
 
+input {
+  margin: 0;
+}
+
 .checkbox-container {
   transition: 0.2s;
   position: relative;
@@ -86,6 +90,9 @@
 }
 
 .checkbox-label {
+  margin-left: -0.5rem;
+  display: flex;
+  align-items: center;
   z-index: 99;
   cursor: pointer;
   width: 100%;
